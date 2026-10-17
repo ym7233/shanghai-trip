@@ -829,6 +829,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .trkday li .n{flex:0 0 24px;height:24px;border-radius:50%;background:#1f5fd1;color:#fff;font:700 12px/24px system-ui,sans-serif;text-align:center}
 .trkday li .tm{font-size:12.5px;color:var(--muted)}
 .tpin{width:24px;height:24px;border-radius:50%;background:#1f5fd1;border:2px solid #fff;color:#fff;font:700 12px/20px system-ui,sans-serif;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.rcard .rper small{display:block;font-size:11.5px;font-weight:600;color:var(--muted);text-align:right}
+.rwhen{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;margin-bottom:6px}
+.rwhen.plan{background:#e3f4ea;color:var(--green)}.rwhen.alt{background:var(--panel2);color:var(--muted)}.rwhen.hard{background:#fbe7e4;color:var(--red)}
+.rcard .rtop{align-items:flex-start}
 .rarea{margin:14px 0 6px;font-size:15px;color:var(--fg)}
 .rcard{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;background:var(--panel)}
 .rcard .rtop{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
@@ -946,16 +950,8 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <div id="gpsInfo" class="small" style="margin-top:8px"></div>
       <div class="btnrow" id="gpsLinks"></div>
     </div>
-    <div class="card" id="alipayCard" style="margin-top:12px">
-      <h3>알리페이 · 결제 바로가기</h3>
-      <div class="btnrow">
-        <a class="btn gold" href="alipays://platformapi/startapp?appId=10000007">알리페이 스캔 열기</a>
-        <a class="btn" href="alipays://platformapi/startapp?appId=20000056">알리페이 결제 코드</a>
-        <a class="btn" href="https://intl.alipay.com/" target="_blank" rel="noopener">알리페이 홈 (웹)</a>
-      </div>
-    </div>
       <details class="card fold" id="restoFold" style="margin-bottom:12px">
-      <summary>🍜 목적지별 맛집 · 메뉴 · 가격</summary>
+      <summary>🍜 목적지별 맛집 · 메뉴 · 가격 (위안 · 원화)</summary>
       <div id="restoList"></div>
     </details>
     <details class="card fold" style="margin-bottom:12px">
@@ -1817,7 +1813,16 @@ document.addEventListener("click", function(e){
 }, true);
 initCn();
 initHotelCard();
-const RESTOS = [{"area": "숙소 · 난징동루 · 인민광장", "items": [{"ko": "쟈쟈탕바오 (황허루점)", "cn": "佳家汤包", "q": "佳家汤包 黄河路", "per": "¥40~60", "menu": "纯鲜肉汤包 돼지고기 탕바오 1판 ¥20~30 · 蟹粉汤包 게살 탕바오 ¥40~60 · 蛋皮汤 계란국", "tip": "현지인이 줄 서는 탕바오집 · 예약보다 줄서기 · 숙소에서 도보 약 15분"}, {"ko": "샤오양셩젠", "cn": "小杨生煎", "q": "小杨生煎 南京东路", "per": "¥30~50", "menu": "生煎包 군만두 4개 ¥15~20 · 牛肉粉丝汤 소고기 당면국 ¥15~20", "tip": "바닥이 바삭한 군만두 · 육즙이 뜨거우니 살짝 구멍 내서 · 체인점이라 어디서나"}, {"ko": "상하이 라오라오 가정식", "cn": "上海姥姥家常饭馆", "q": "上海姥姥家常饭馆 福州路", "per": "¥80~120", "menu": "红烧肉 홍샤오로우 · 糖醋排骨 탕수갈비 · 葱油拌面 파기름 비빔면", "tip": "숙소와 같은 푸저우루(70번지) · 상하이 가정식 · 10:30~21:30"}, {"ko": "하이디라오 (난징동루)", "cn": "海底捞火锅", "q": "海底捞 南京东路", "per": "¥100~150", "menu": "番茄锅 토마토탕 · 肥牛 소고기 · 虾滑 새우완자 · 捞面 수타면 쇼", "tip": "따종디엔핑에서 번호표(排队)·예약 가능 · 아이 동반 편함"}]}, {"area": "와이탄", "items": [{"ko": "와이포쟈 (외할머니집)", "cn": "外婆家", "q": "外婆家 南京东路", "per": "¥60~90", "menu": "外婆红烧肉 홍샤오로우 · 麻婆豆腐 마파두부 · 茶香鸡 차향 닭구이", "tip": "저렴한 항저우식 체인 · 가족 식사 무난 · 저녁엔 대기 있음"}]}, {"area": "예원 · 성황묘", "items": [{"ko": "남상만두 (예원점)", "cn": "南翔馒头店", "q": "南翔馒头店 豫园", "per": "¥60~90", "menu": "1층 포장 鲜肉小笼 6개 ¥30 · 2층 鲜肉小笼 6개 ¥38 / 蟹粉小笼 6개 ¥48 · 3층 蟹黄汤包 1개 ¥49", "tip": "1층 포장이 가장 저렴하지만 줄이 김 · 앉아서 먹으려면 2층 · 3층은 비싸고 경치 좋음"}, {"ko": "뤼보랑", "cn": "绿波廊", "q": "绿波廊 豫园", "per": "¥150~250", "menu": "眉毛酥 눈썹 모양 과자 · 三丝春卷 춘권 · 蟹粉小笼 게살 샤오롱바오", "tip": "예원 안 유명 상하이 요리집 · 창가 자리 원하면 따종디엔핑 예약"}]}, {"area": "신천지 · 임시정부 · 텐즈팡", "items": [{"ko": "딘타이펑 (신천지점)", "cn": "鼎泰丰", "q": "鼎泰丰 新天地", "per": "¥120~180", "menu": "小笼包 샤오롱바오 · 蟹粉小笼 게살 샤오롱바오 · 虾仁蛋炒饭 새우 볶음밥", "tip": "한국 딘타이펑과 비슷해 아이들도 무난 · 서비스료가 붙을 수 있음"}]}, {"area": "우캉루 · 우캉맨션", "items": [{"ko": "라오지스", "cn": "老吉士", "q": "老吉士 天平路", "per": "¥150~250", "menu": "红烧肉 홍샤오로우 · 葱烤大排 파 돼지갈비 · 蟹粉豆腐 게살 두부", "tip": "유명 상하이 요리집(톈핑루 41번지) · 예약이 매우 어려우니 일찍 예약"}, {"ko": "쿠쾅 젤라또", "cn": "酷矿gelato", "q": "酷矿gelato 武康大楼", "per": "¥30~45", "menu": "과일·피스타치오·초콜릿 젤라또", "tip": "우캉맨션 1층 · 사진 찍기 좋은 디저트 · 10:00~20:30"}]}, {"area": "상하이 디즈니랜드", "items": [{"ko": "로열 뱅큇 홀 (성 안 레스토랑)", "cn": "皇家宴会厅", "q": "", "per": "¥300 이상 (코스)", "menu": "스테이크 · 연어 · 어린이 미키 세트 · 디저트", "tip": "디즈니 공식 앱에서 예약 · 공주 캐릭터 식사 · 따종디엔핑 예약 아님"}, {"ko": "올드 트리 태번 (라푼젤 식당)", "cn": "老藤树食栈", "q": "", "per": "¥90~130", "menu": "烤鸡 로스트 치킨 · 炸鱼薯条 피시앤칩스 · 牛肉饭 소고기 덮밥", "tip": "점심은 11시 전에 먹으면 덜 붐빔"}, {"ko": "간식", "cn": "烤火鸡腿", "q": "", "per": "개당 ¥60~90", "menu": "烤火鸡腿 칠면조 다리 · 米奇冰淇淋 미키 아이스크림 · 鸭腿 오리 다리", "tip": "놀이기구 사이에 간식으로 · 한정 메뉴는 일찍 품절"}]}, {"area": "우전 (시짜)", "items": [{"ko": "서생 양고기면", "cn": "书生羊肉面", "q": "书生羊肉面 乌镇", "per": "¥40~60", "menu": "红烧羊肉面 양고기 조림 국수", "tip": "우전 대표 음식 · 시짜 거리 216번지"}, {"ko": "우마 훈툰", "cn": "吴妈馄饨", "q": "吴妈馄饨 乌镇", "per": "¥20~35", "menu": "招牌馄饨 대표 훈툰 · 鲜肉大馄饨 고기 훈툰", "tip": "가볍게 한 끼 · 아이들 먹기 좋음"}, {"ko": "마오라오타이 취두부", "cn": "茅老太臭豆腐", "q": "茅老太臭豆腐 乌镇", "per": "¥15~25", "menu": "臭豆腐 취두부", "tip": "냄새가 강해 호불호 · 투어에 식사가 포함됐는지 먼저 확인"}]}];
+const RESTOS = [{"area": "숙소 · 난징동루 · 인민광장", "items": [{"ko": "쟈쟈탕바오 (황허루점)", "cn": "佳家汤包", "q": "佳家汤包 黄河路", "per": "¥40~60", "menu": "纯鲜肉汤包 돼지고기 탕바오 1판 ¥20~30 · 蟹粉汤包 게살 탕바오 ¥40~60 · 蛋皮汤 계란국", "tip": "현지인이 줄 서는 탕바오집 · 예약보다 줄서기 · 숙소에서 도보 약 15분", "wk": "plan", "when": "3일차 10/28(수) 11:30 · 점심 (인민광장, 우전 투어 출발 전)"}, {"ko": "샤오양셩젠", "cn": "小杨生煎", "q": "小杨生煎 南京东路", "per": "¥30~50", "menu": "生煎包 군만두 4개 ¥15~20 · 牛肉粉丝汤 소고기 당면국 ¥15~20", "tip": "바닥이 바삭한 군만두 · 육즙이 뜨거우니 살짝 구멍 내서 · 체인점이라 어디서나", "wk": "plan", "when": "1일차 10/26(월) 21:00 · 와이탄·난징동루 야식"}, {"ko": "상하이 라오라오 가정식", "cn": "上海姥姥家常饭馆", "q": "上海姥姥家常饭馆 福州路", "per": "¥80~120", "menu": "红烧肉 홍샤오로우 · 糖醋排骨 탕수갈비 · 葱油拌面 파기름 비빔면", "tip": "숙소와 같은 푸저우루(70번지) · 상하이 가정식 · 10:30~21:30", "wk": "alt", "when": "선택 · 숙소 근처 저녁 대안 (일정에 없음)"}, {"ko": "하이디라오 (난징동루)", "cn": "海底捞火锅", "q": "海底捞 南京东路", "per": "¥100~150", "menu": "番茄锅 토마토탕 · 肥牛 소고기 · 虾滑 새우완자 · 捞面 수타면 쇼", "tip": "따종디엔핑에서 번호표(排队)·예약 가능 · 아이 동반 편함", "wk": "plan", "when": "1일차 10/26(월) 17:00 · 저녁 (난징동루)"}]}, {"area": "와이탄", "items": [{"ko": "와이포쟈 (외할머니집)", "cn": "外婆家", "q": "外婆家 南京东路", "per": "¥60~90", "menu": "外婆红烧肉 홍샤오로우 · 麻婆豆腐 마파두부 · 茶香鸡 차향 닭구이", "tip": "저렴한 항저우식 체인 · 가족 식사 무난 · 저녁엔 대기 있음", "wk": "alt", "when": "선택 · 1일차 저녁 하이디라오 대안"}]}, {"area": "예원 · 성황묘", "items": [{"ko": "남상만두 (예원점)", "cn": "南翔馒头店", "q": "南翔馒头店 豫园", "per": "¥60~90", "menu": "1층 포장 鲜肉小笼 6개 ¥30 · 2층 鲜肉小笼 6개 ¥38 / 蟹粉小笼 6개 ¥48 · 3층 蟹黄汤包 1개 ¥49", "tip": "1층 포장이 가장 저렴하지만 줄이 김 · 앉아서 먹으려면 2층 · 3층은 비싸고 경치 좋음", "wk": "plan", "when": "1일차 10/26(월) 18:00 · 예원 구경 중 간식 (1층 포장)"}, {"ko": "뤼보랑", "cn": "绿波廊", "q": "绿波廊 豫园", "per": "¥150~250", "menu": "眉毛酥 눈썹 모양 과자 · 三丝春卷 춘권 · 蟹粉小笼 게살 샤오롱바오", "tip": "예원 안 유명 상하이 요리집 · 창가 자리 원하면 따종디엔핑 예약", "wk": "alt", "when": "선택 · 1일차 예원 (이미 저녁 먹은 뒤라 대안)"}]}, {"area": "신천지 · 임시정부 · 텐즈팡", "items": [{"ko": "딘타이펑 (신천지점)", "cn": "鼎泰丰", "q": "鼎泰丰 新天地", "per": "¥120~180", "menu": "小笼包 샤오롱바오 · 蟹粉小笼 게살 샤오롱바오 · 虾仁蛋炒饭 새우 볶음밥", "tip": "한국 딘타이펑과 비슷해 아이들도 무난 · 서비스료가 붙을 수 있음", "wk": "hard", "when": "일정상 어려움 · 3일차 신천지 09:00는 개점 전"}]}, {"area": "우캉루 · 우캉맨션", "items": [{"ko": "라오지스", "cn": "老吉士", "q": "老吉士 天平路", "per": "¥150~250", "menu": "红烧肉 홍샤오로우 · 葱烤大排 파 돼지갈비 · 蟹粉豆腐 게살 두부", "tip": "유명 상하이 요리집(톈핑루 41번지) · 예약이 매우 어려우니 일찍 예약", "wk": "hard", "when": "일정상 어려움 · 4일차 11:30 개점, 11:40 공항 출발"}, {"ko": "쿠쾅 젤라또", "cn": "酷矿gelato", "q": "酷矿gelato 武康大楼", "per": "¥30~45", "menu": "과일·피스타치오·초콜릿 젤라또", "tip": "우캉맨션 1층 · 사진 찍기 좋은 디저트 · 10:00~20:30", "wk": "plan", "when": "4일차 10/29(목) 10:00 · 우캉루 산책 중 디저트"}]}, {"area": "상하이 디즈니랜드", "items": [{"ko": "로열 뱅큇 홀 (성 안 레스토랑)", "cn": "皇家宴会厅", "q": "", "per": "¥300 이상 (코스)", "menu": "스테이크 · 연어 · 어린이 미키 세트 · 디저트", "tip": "디즈니 공식 앱에서 예약 · 공주 캐릭터 식사 · 따종디엔핑 예약 아님", "wk": "alt", "when": "선택 · 2일차 10/27(화) 17:30 저녁 (디즈니 앱 예약 시)"}, {"ko": "올드 트리 태번 (라푼젤 식당)", "cn": "老藤树食栈", "q": "", "per": "¥90~130", "menu": "烤鸡 로스트 치킨 · 炸鱼薯条 피시앤칩스 · 牛肉饭 소고기 덮밥", "tip": "점심은 11시 전에 먹으면 덜 붐빔", "wk": "plan", "when": "2일차 10/27(화) 12:30 · 점심 (마인 트레인 후)"}, {"ko": "간식", "cn": "烤火鸡腿", "q": "", "per": "개당 ¥60~90", "menu": "烤火鸡腿 칠면조 다리 · 米奇冰淇淋 미키 아이스크림 · 鸭腿 오리 다리", "tip": "놀이기구 사이에 간식으로 · 한정 메뉴는 일찍 품절", "wk": "plan", "when": "2일차 10/27(화) 14:30 · 퍼레이드 대기 중 간식"}]}, {"area": "우전 (시짜)", "items": [{"ko": "서생 양고기면", "cn": "书生羊肉面", "q": "书生羊肉面 乌镇", "per": "¥40~60", "menu": "红烧羊肉面 양고기 조림 국수", "tip": "우전 대표 음식 · 시짜 거리 216번지", "wk": "plan", "when": "3일차 10/28(수) 18:00 · 우전 저녁"}, {"ko": "우마 훈툰", "cn": "吴妈馄饨", "q": "吴妈馄饨 乌镇", "per": "¥20~35", "menu": "招牌馄饨 대표 훈툰 · 鲜肉大馄饨 고기 훈툰", "tip": "가볍게 한 끼 · 아이들 먹기 좋음", "wk": "plan", "when": "3일차 10/28(수) 18:00 · 우전 저녁 (가볍게)"}, {"ko": "마오라오타이 취두부", "cn": "茅老太臭豆腐", "q": "茅老太臭豆腐 乌镇", "per": "¥15~25", "menu": "臭豆腐 취두부", "tip": "냄새가 강해 호불호 · 투어에 식사가 포함됐는지 먼저 확인", "wk": "alt", "when": "선택 · 3일차 우전 산책 중 간식"}]}];
+const CNY_KRW = 199;   // 1위안 = 약 199원 (2026-10-16 위안-원 직거래 마감 199.14원)
+function yuan(t){ return String(t).replace(/¥\s*([\d,]+(?:~[\d,]+)?)/g, "$1위안"); }
+function wonNum(n){ return (Math.round(n*CNY_KRW/100)*100).toLocaleString("ko-KR"); }
+function wonRange(t){
+  const m = String(t).match(/¥\s*([\d,]+)(?:~([\d,]+))?/); if(!m) return "";
+  const a = +m[1].replace(/,/g,""), b = m[2] ? +m[2].replace(/,/g,"") : null;
+  return "약 " + wonNum(a) + (b ? "~" + wonNum(b) : "") + "원" + (/이상/.test(t) ? " 이상" : "");
+}
+function yuanW(t){ return String(t).replace(/¥\s*([\d,]+)(?:~([\d,]+))?/g, (x,a,b)=> (b ? a+"~"+b : a) + "위안(약 " + wonNum(+a) + (b ? "~"+wonNum(+b) : "") + "원)"); }
 function initRestos(){
   const box = $("#restoList"); if(!box) return;
   let n = 0;
@@ -1825,9 +1830,9 @@ function initRestos(){
     const i = n++, enc = encodeURIComponent(r.q);
     const dp = r.q ? `<a class="btn primary" data-app="dianping" data-path="searchshoplist?keyword=${enc}" data-web="https://m.dianping.com/" href="https://m.dianping.com/" target="_blank" rel="noopener">따종디엔핑 예약</a>` : "";
     const am = r.q ? `<a class="btn" href="https://uri.amap.com/search?keyword=${enc}&city=310000&src=shanghai-trip" target="_blank" rel="noopener">고덕 검색</a>` : "";
-    return `<div class="rcard"><div class="rtop"><span class="rname">${esc(r.ko)}</span><span class="rper">1인 ${esc(r.per)}</span></div>`+
+    return `<div class="rcard"><div class="rwhen ${r.wk}">🗓 ${esc(r.when)}</div><div class="rtop"><span class="rname">${esc(r.ko)}</span><span class="rper">1인 ${esc(yuan(r.per))}<small>${esc(wonRange(r.per))}</small></span></div>`+
       `<div class="rcn">${esc(r.cn)}</div>${pr(r.cn)}`+
-      `<div class="rmenu">🍽 ${esc(r.menu)}</div><div class="rtip">💡 ${esc(r.tip)}</div>`+
+      `<div class="rmenu">🍽 ${esc(yuanW(r.menu))}</div><div class="rtip">💡 ${esc(r.tip)}</div>`+
       `<div class="cnrow2"><button type="button" class="btn rcopy" data-i="${i}">이름 복사</button>${dp}${am}</div></div>`;
   }).join("")).join("");
   const flat = RESTOS.flatMap(a=>a.items);
