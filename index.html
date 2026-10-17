@@ -821,6 +821,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .trkstats.static{cursor:default}
 .trkfoot{display:flex;justify-content:space-between;align-items:center;gap:8px}.trklink{color:#1f5fd1;font-weight:600}
 #trkMsg.on{color:var(--green);font-weight:600}#trkMsg.bad{color:var(--red)}
+.trkapps{display:flex;gap:8px;margin-top:10px}.trkapps .btn{flex:1;text-align:center}
 .trkhead{display:flex;align-items:center;gap:10px}.trkhead h2{margin:0}
 .trkday{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:12px}
 .trkday h3{margin:0 0 4px;font-size:16px}.trkday .sum{font-size:13px;color:var(--muted);margin-bottom:6px}
@@ -1066,6 +1067,7 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
   <section class="tab" id="tab-track" data-tab="track">
     <div class="trkhead"><button type="button" class="btn" id="trkBack">← 홈</button><h2>여행 기록</h2></div>
     <div class="trkstats static" id="trkStats2"></div>
+    <div class="trkapps"><a class="btn" data-app="gmaps" data-path="www.google.com/maps/timeline" data-web="https://www.google.com/maps/timeline" href="https://www.google.com/maps/timeline" target="_blank" rel="noopener">🗓️ 구글 타임라인</a><a class="btn" data-app="amapapp" data-path="" data-web="https://www.amap.com/" href="https://www.amap.com/" target="_blank" rel="noopener">👣 고덕 足迹</a></div>
     <div class="mapbox" style="margin-top:12px"><div id="trkMap" style="height:min(55vh,460px);width:100%"></div></div>
     <div id="trkDays"></div>
     <div style="margin:16px 0 8px;text-align:right"><button type="button" class="btn" id="trkClear">기록 지우기</button></div>
@@ -1511,10 +1513,12 @@ const CHECK = [
   ]],
   ["통신 · 앱", [
     ["eSIM 또는 로밍 설정 · 도착 전 활성화", "데이터 없으면 지도·디디 호출 불가"],
-    ["가오더(高德 Amap) 설치 · 시내·디즈니 오프라인 지도 저장", "구글맵은 중국에서 안 됨"],
+    ["고덕지도(高德 Amap) 설치 · 시내·디즈니 오프라인 지도 저장", "중국 길찾기는 고덕지도 사용"],
     ["디디(DiDi) 설치 · 카드 등록 테스트", "외국 카드 결제·번호 인증이 되는지 한국에서 미리 확인"],
     ["알리페이 해외 결제 연결 (외국 카드)", "지하철·편의점 QR 결제용"],
-    ["이 HTML 파일을 휴대폰에 저장 · 인터넷 없이 열리는지 확인", "GPS도 이때 한 번 테스트"]
+    ["가족 앱 홈 화면에 설치 · 인터넷 없이 열리는지 확인", "출발 전 한 번 열어 두기"],
+    ["구글 지도 타임라인 켜기 (가족 모두)", "구글 지도 → 프로필 → 타임라인 → 켜기 · 휴대폰 위치 켜기"],
+    ["고덕지도 足迹 위치 확인", "我的 → 出行里程 · 고덕 길안내 경로가 자동 기록"]
   ]],
   ["공항 · 짐", [
     ["환전 금액 결정 (위안)", "엑셀 환전 칸이 비어 있음"],
@@ -1523,9 +1527,11 @@ const CHECK = [
     ["얇은 겉옷 · 우산", "아침·밤 쌀쌀, 비 가능성"]
   ]],
   ["여행 중 · 매일 확인", [
-    ["매일 밤 다음 날 일정 확인 (이 앱 '오늘' 탭)", ""],
+    ["매일 밤 다음 날 일정 확인 (이 앱 '일정' 탭)", ""],
     ["호텔 명함 · 주소를 중국어로 저장", "택시 기사에게 보여주기"],
-    ["10/28 22:00 전 숙소 복귀", "우전 투어 귀가 시간 점검"]
+    ["10/28 22:00 전 숙소 복귀", "우전 투어 귀가 시간 점검"],
+    ["상하이 도착 후 '여행 기록' 켜기", "홈 화면 👣 카드 · 이동할 때 앱 열어 두기"],
+    ["고덕지도로 이동할 땐 길안내 켜기", "足迹에 경로가 남음"]
   ]]
 ];
 function renderChecks(){
@@ -1766,7 +1772,9 @@ function appHref(app, web, path){
     alipay:{pkg:"com.eg.android.AlipayGphone", scheme:"alipays", ios:"alipays://"},
     didi:{pkg:"com.didiglobal.passenger", scheme:"diditaxi", ios:"diditaxi://"},
     papago:{pkg:"com.naver.labs.translator", scheme:"papago", ios:"papago://"},
-    tmap:{pkg:"com.skt.tmap.ku", scheme:"tmap", ios:"tmap://"}
+    tmap:{pkg:"com.skt.tmap.ku", scheme:"tmap", ios:"tmap://"},
+    gmaps:{pkg:"com.google.android.apps.maps", scheme:"https", ios:"comgooglemaps://"},
+    amapapp:{pkg:"com.autonavi.minimap", scheme:"androidamap", ios:"iosamap://"}
   }[app];
   if(!m) return null;
   if(android) return "intent://"+(path||"")+"#Intent;scheme="+m.scheme+";package="+m.pkg+";S.browser_fallback_url="+encodeURIComponent(web)+";end";
