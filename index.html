@@ -866,10 +866,10 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <button class="tile" type="button" data-go="map"><span class="ti">🗺️</span><b>여행 지도</b><small>고덕지도 · 장소 체크 · 길찾기</small></button>
       <button class="tile" type="button" data-go="disney"><span class="ti">🏰</span><b>디즈니</b><small>지도 번호 1~11 · 놀이기구 바로가기</small></button>
       <button class="tile hot" type="button" data-go="info" data-sc="#emergency"><span class="ti">🚨</span><b>긴급 연락</b><small>110 · 119 · 영사관 · 항공사</small></button>
-      <button class="tile hot" type="button" data-go="map" data-sc="#alipayCard"><span class="ti">💳</span><b>알리페이</b><small>스캔 · 결제 코드 바로가기</small></button>
+      <a class="tile hot" href="https://intl.alipay.com/" data-app="alipay" data-web="https://intl.alipay.com/" style="text-decoration:none"><span class="ti">💳</span><b>알리페이</b><small>알리페이 앱 바로 열기</small></a>
       <a class="tile" href="https://intl.alipay.com/" data-app="alipay" data-web="https://intl.alipay.com/" style="text-decoration:none"><span class="ti">🚕</span><b>디디택시</b><small>알리페이 앱 바로 열기</small></a>
       <a class="tile" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/" style="text-decoration:none"><span class="ti">🔤</span><b>파파고</b><small>중국어 번역 앱 바로 열기</small></a>
-      <a class="tile" href="https://m.dianping.com/" data-app="dianping" data-web="https://m.dianping.com/" style="text-decoration:none"><span class="ti">🍜</span><b>따종디엔핑</b><small>大众点评 · 맛집 검색 · 예약 · 줄서기</small></a>
+      <a class="tile" href="https://m.dianping.com/" data-app="dianping" data-path="searchshoplist?keyword=%E7%BE%8E%E9%A3%9F" data-web="https://m.dianping.com/" style="text-decoration:none"><span class="ti">🍜</span><b>따종디엔핑</b><small>大众点评 · 맛집 검색 · 예약 · 줄서기</small></a>
     </div>
   </section>
 
@@ -1773,10 +1773,10 @@ function appHref(app, web, path){
     tmap:{pkg:"com.skt.tmap.ku", scheme:"tmap", ios:"tmap://"},
     gmaps:{pkg:"com.google.android.apps.maps", scheme:"https", ios:"comgooglemaps://"},
     amapapp:{pkg:"com.autonavi.minimap", scheme:"androidamap", ios:"iosamap://"},
-    dianping:{pkg:"com.dianping.v1", scheme:"dianping", ios:"dianping://"}
+    dianping:{pkg:"", scheme:"dianping", ios:"dianping://"}
   }[app];
   if(!m) return null;
-  if(android) return "intent://"+(path||"")+"#Intent;scheme="+m.scheme+";package="+m.pkg+";S.browser_fallback_url="+encodeURIComponent(web)+";end";
+  if(android) return "intent://"+(path||"")+"#Intent;scheme="+m.scheme+(m.pkg ? ";package="+m.pkg : "")+";S.browser_fallback_url="+encodeURIComponent(web)+";end";
   if(ios) return m.ios+(path||"");
   return null;
 }
