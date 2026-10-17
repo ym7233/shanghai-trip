@@ -821,6 +821,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .trkstats.static{cursor:default}
 .trkfoot{display:flex;justify-content:space-between;align-items:center;gap:8px}.trklink{color:#1f5fd1;font-weight:600}
 #trkMsg.on{color:var(--green);font-weight:600}#trkMsg.bad{color:var(--red)}
+.mapapps{display:flex;gap:8px;margin:0 0 10px}.mapapps .btn{flex:1;text-align:center;font-weight:600}
 .trkapps{display:flex;gap:8px;margin-top:10px}.trkapps .btn{flex:1;text-align:center}
 .trkhead{display:flex;align-items:center;gap:10px}.trkhead h2{margin:0}
 .trkday{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:12px}
@@ -951,7 +952,8 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
   <section class="tab" id="tab-map" data-tab="map">
     <h2>여행 지도</h2>
     <div id="viewAmap">
-      <div class="mapbox"><div id="amap" style="height:min(62vh,520px);width:100%"></div></div>
+      <div class="mapapps"><a class="btn" data-app="gmaps" data-path="www.google.com/maps/@31.2330,121.4800,13z" data-web="https://www.google.com/maps/@31.2330,121.4800,13z" href="https://www.google.com/maps/@31.2330,121.4800,13z" target="_blank" rel="noopener">🗺️ 구글 지도 앱</a><a class="btn primary" data-app="amapapp" data-path="viewMap?sourceApplication=shanghai-trip&amp;poiname=%E4%B8%8A%E6%B5%B7&amp;lat=31.2330&amp;lon=121.4800&amp;dev=0" data-web="https://www.amap.com/" href="https://www.amap.com/" target="_blank" rel="noopener">🧭 고덕지도 앱</a></div>
+      <div class="mapbox"><div id="amap" style="height:min(36vh,300px);width:100%"></div></div>
           </div>
     <div class="card">
       <div class="row" style="align-items:center">
