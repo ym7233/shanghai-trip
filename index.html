@@ -788,6 +788,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .pinchip{width:30px;height:30px;border-radius:50%;border:0;background:var(--gold);color:#1b1400;font:800 14px system-ui,sans-serif;cursor:pointer;padding:0}
 .pinchip.off{background:none;color:var(--muted);text-align:center}
 .tl.dl li{grid-template-columns:34px 56px 1fr;align-items:start}
+.dxd{margin-top:4px}
+.dxd>summary{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--cyan);cursor:pointer;list-style:none;padding:3px 0;user-select:none}
+.dxd>summary::-webkit-details-marker{display:none}
+.dxd>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.dxd[open]>summary::before{transform:rotate(90deg)}
 .dx{display:flex;gap:8px;align-items:flex-start;margin-top:6px}
 img.rphoto.dxph{flex:0 0 72px;width:72px;height:54px;border-radius:8px}
 .dxtip{font-size:12.5px;line-height:1.45;color:var(--muted)}
@@ -1535,7 +1540,7 @@ function xHTML(x, alt){
   const [img, tip, blog, yt] = x;
   const ph = img ? `<img class="rphoto dxph" loading="lazy" alt="${esc(alt)}" src="https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(img)}?width=200" onerror="this.remove()">` : "";
   const v = yt ? `<a class="dxa" href="https://www.youtube.com/watch?v=${yt[0]}" target="_blank" rel="noopener"><span class="dxth"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${yt[0]}/mqdefault.jpg" onerror="this.remove()"><em>${yt[3]}</em></span>▶️ 유튜브 · ${esc(yt[1])} · 조회 ${yt[2]}</a>` : "";
-  return `<div class="dx">${ph}<div class="dxtip">💡 ${esc(tip)}</div></div><div class="dxlinks"><a class="dxa" href="${blog}" target="_blank" rel="noopener">📝 블로그 후기</a>${v}</div>`;
+  return `<details class="dxd"><summary>사진 · 팁 · 블로그${yt?" · 유튜브":""}</summary><div class="dx">${ph}<div class="dxtip">💡 ${esc(tip)}</div></div><div class="dxlinks"><a class="dxa" href="${blog}" target="_blank" rel="noopener">📝 블로그 후기</a>${v}</div></details>`;
 }
 function disX(it){ return xHTML(DIS_X[it.t], it.x.split(" (")[0]); }
 function renderDisneyList(){
@@ -1547,7 +1552,7 @@ function renderDisneyList(){
 }
 function focusPin(n){
   initDisney();
-  disneyInfo(n);
+  $("#dInfo").style.display = "none";
   $("#disneyMap").scrollIntoView({behavior:"smooth", block:"start"});
   const m = dMarkers[n]; if(!m) return;
   dmap.setView(m.getLatLng(), 1.5, {animate:true});
