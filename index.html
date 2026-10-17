@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>상하이 여행 지도</title>
+<title>우리가족 중국 상하이 여행</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f5fd1">
 <link rel="icon" href="icon-192.png">
@@ -829,6 +829,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .trkday li .n{flex:0 0 24px;height:24px;border-radius:50%;background:#1f5fd1;color:#fff;font:700 12px/24px system-ui,sans-serif;text-align:center}
 .trkday li .tm{font-size:12.5px;color:var(--muted)}
 .tpin{width:24px;height:24px;border-radius:50%;background:#1f5fd1;border:2px solid #fff;color:#fff;font:700 12px/20px system-ui,sans-serif;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.rarea{margin:14px 0 6px;font-size:15px;color:var(--fg)}
+.rcard{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;background:var(--panel)}
+.rcard .rtop{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.rcard .rname{font-weight:700}.rcard .rper{font-weight:700;color:var(--red);white-space:nowrap}
+.rcard .rcn{font-size:16px;font-weight:600;margin-top:2px;user-select:text;-webkit-user-select:text}
+.rcard .rmenu{font-size:13px;margin-top:4px}.rcard .rtip{font-size:12.5px;color:var(--muted);margin-top:3px}
+.rcard .cnrow2{margin-top:6px}
 .wxfoot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .cncn{font-size:18px;font-weight:600;user-select:text;-webkit-user-select:text;flex:1 1 auto}.cnrow2 .btn{padding:6px 10px;font-size:13px}
 .dis-ul{margin:0;padding-left:20px;line-height:1.6}.dis-ul li{margin-bottom:4px}
@@ -840,7 +847,7 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
 <body>
 <div class="wrap">
   <header class="hdr">
-    <h1>상하이 3박 4일 · 여행 지도</h1>
+    <h1>우리가족 중국 상하이 여행</h1>
     <div class="sub">10/26(월) ~ 10/29(목) · 시간 표기는 <b>중국 현지시간</b> 기준 (한국보다 1시간 느림). 1일차 항공편만 한국시간(KST).</div>
   </header>
 
@@ -947,7 +954,11 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
         <a class="btn" href="https://intl.alipay.com/" target="_blank" rel="noopener">알리페이 홈 (웹)</a>
       </div>
     </div>
-      <details class="card fold" style="margin-bottom:12px">
+      <details class="card fold" id="restoFold" style="margin-bottom:12px">
+      <summary>🍜 목적지별 맛집 · 메뉴 · 가격</summary>
+      <div id="restoList"></div>
+    </details>
+    <details class="card fold" style="margin-bottom:12px">
       <summary>고덕지도 검색용 (중국어)</summary>
       <div class="row" style="align-items:center;justify-content:flex-end;margin-top:8px">
         <button type="button" class="btn" id="cnAll">전체 복사</button>
@@ -1625,7 +1636,7 @@ function flash(b, ok, label){
   b.textContent = ok ? "복사됨 ✓" : "길게 눌러 복사";
   setTimeout(()=>{ b.textContent = label || old; }, 1500);
 }
-const PRON = {"请去这个地址：上海市黄浦区福州路431号": "칭 취 쩌거 디즈: 샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "上海浦东国际机场": "샹하이 푸똥 꿔지 지창", "上海市黄浦区福州路431号": "샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "南京东路步行街": "난징 똥루 뿌싱지에", "海底捞火锅 南京东路": "하이디라오 훠꿔 난징 똥루", "豫园": "위위엔", "城隍庙": "청황먀오", "大白兔奶糖": "따바이투 나이탕", "外滩": "와이탄", "上海外滩英迪格酒店": "샹하이 와이탄 잉디거 지우띠엔", "十六铺码头": "스리우푸 마터우", "上海迪士尼度假区": "샹하이 디스니 뚜지아취", "新天地": "신티엔띠", "大韩民国临时政府旧址": "따한 민구어 린스 정푸 지우즈", "田子坊": "티엔쯔팡", "人民广场": "런민 광창", "乌镇": "우전", "武康大楼": "우캉 따러우", "武康路": "우캉 루", "上海迪士尼乐园": "샹하이 디스니 러위엔", "迪士尼站": "디스니 짠", "请在这里停车": "칭 짜이 쩌리 팅처", "多少钱？": "뚜어샤오 치엔", "多少钱": "뚜어샤오 치엔", "请给我开发票": "칭 게이 워 카이 파피아오", "洗手间在哪里？": "시서우지엔 짜이 나리", "洗手间在哪里": "시서우지엔 짜이 나리", "请去上海迪士尼乐园": "칭 취 샹하이 디스니 러위엔", "出租车": "추주처", "滴滴出行": "디디 추싱"};
+const PRON = {"佳家汤包": "쟈쟈 탕바오", "小杨生煎": "샤오양 셩지엔", "上海姥姥家常饭馆": "샹하이 라오라오 쟈창 판관", "海底捞火锅": "하이디라오 훠꿔", "外婆家": "와이포쟈", "南翔馒头店": "난샹 만터우 띠엔", "绿波廊": "뤼보랑", "鼎泰丰": "딩타이펑", "老吉士": "라오지스", "酷矿gelato": "쿠쾅 젤라또", "皇家宴会厅": "황쟈 옌후이팅", "老藤树食栈": "라오텅수 스잔", "烤火鸡腿": "카오 훠지퉤이", "书生羊肉面": "슈셩 양러우미엔", "吴妈馄饨": "우마 훈툰", "茅老太臭豆腐": "마오라오타이 처우떠우푸", "不要辣": "부야오 라", "不要香菜": "부야오 샹차이", "请给我儿童椅": "칭 게이 워 얼퉁이", "请去这个地址：上海市黄浦区福州路431号": "칭 취 쩌거 디즈: 샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "上海浦东国际机场": "샹하이 푸똥 꿔지 지창", "上海市黄浦区福州路431号": "샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "南京东路步行街": "난징 똥루 뿌싱지에", "海底捞火锅 南京东路": "하이디라오 훠꿔 난징 똥루", "豫园": "위위엔", "城隍庙": "청황먀오", "大白兔奶糖": "따바이투 나이탕", "外滩": "와이탄", "上海外滩英迪格酒店": "샹하이 와이탄 잉디거 지우띠엔", "十六铺码头": "스리우푸 마터우", "上海迪士尼度假区": "샹하이 디스니 뚜지아취", "新天地": "신티엔띠", "大韩民国临时政府旧址": "따한 민구어 린스 정푸 지우즈", "田子坊": "티엔쯔팡", "人民广场": "런민 광창", "乌镇": "우전", "武康大楼": "우캉 따러우", "武康路": "우캉 루", "上海迪士尼乐园": "샹하이 디스니 러위엔", "迪士尼站": "디스니 짠", "请在这里停车": "칭 짜이 쩌리 팅처", "多少钱？": "뚜어샤오 치엔", "多少钱": "뚜어샤오 치엔", "请给我开发票": "칭 게이 워 카이 파피아오", "洗手间在哪里？": "시서우지엔 짜이 나리", "洗手间在哪里": "시서우지엔 짜이 나리", "请去上海迪士尼乐园": "칭 취 샹하이 디스니 러위엔", "出租车": "추주처", "滴滴出行": "디디 추싱"};
 function pr(c){ return PRON[c] ? '<div class="cnpr">'+esc(PRON[c])+'</div>' : ''; }
 function initCn(){
   const box = $("#cnList"); if(!box) return;
@@ -1671,6 +1682,7 @@ function initDisCn(){
 
 const NAV_DEST = [{"ko": "푸동 국제공항 (PVG)", "cn": "上海浦东国际机场", "lat": 31.1443, "lng": 121.8083}, {"ko": "인터시티 호텔 (숙소)", "cn": "上海市黄浦区福州路431号", "lat": 31.2355, "lng": 121.479}, {"ko": "난징동루 M&M's · 미니소", "cn": "南京东路步行街", "lat": 31.2352, "lng": 121.4745}, {"ko": "하이디라오", "cn": "海底捞火锅 南京东路", "lat": 31.2345, "lng": 121.477}, {"ko": "예원 · 청치 · 따바이투", "cn": "豫园", "lat": 31.227, "lng": 121.4925}, {"ko": "와이탄 · 황푸강 투어 집합", "cn": "上海外滩英迪格酒店", "lat": 31.2375, "lng": 121.4955}, {"ko": "상하이 디즈니랜드", "cn": "上海迪士尼度假区", "lat": 31.1434, "lng": 121.6578}, {"ko": "신천지", "cn": "新天地", "lat": 31.2195, "lng": 121.4745}, {"ko": "대한민국 임시정부 유적지", "cn": "大韩民国临时政府旧址", "lat": 31.224, "lng": 121.474}, {"ko": "텐즈팡", "cn": "田子坊", "lat": 31.2085, "lng": 121.47}, {"ko": "인민광장", "cn": "人民广场", "lat": 31.2304, "lng": 121.4737}, {"ko": "우캉맨션 · 우캉루", "cn": "武康大楼", "lat": 31.2087, "lng": 121.4437}, {"ko": "우전 (수향 마을)", "cn": "乌镇", "lat": 30.747, "lng": 120.49}];
 const PHRASES = [{"ko": "여기서 세워주세요", "cn": "请在这里停车"}, {"ko": "얼마예요?", "cn": "多少钱？"}, {"ko": "영수증(발급) 주세요", "cn": "请给我开发票"}, {"ko": "화장실 어디예요?", "cn": "洗手间在哪里？"}, {"ko": "상하이 디즈니랜드 가주세요", "cn": "请去上海迪士尼乐园"}];
+PHRASES.push({"ko": "맵지 않게 해주세요", "cn": "不要辣"}, {"ko": "고수 빼주세요", "cn": "不要香菜"}, {"ko": "아기 의자 주세요", "cn": "请给我儿童椅"});
 PHRASES.push({"ko": "호텔 주소로 가주세요 (택시)", "cn": "请去这个地址：上海市黄浦区福州路431号"});
 
 function navTo(lat,lng,name,mode){
@@ -1805,6 +1817,26 @@ document.addEventListener("click", function(e){
 }, true);
 initCn();
 initHotelCard();
+const RESTOS = [{"area": "숙소 · 난징동루 · 인민광장", "items": [{"ko": "쟈쟈탕바오 (황허루점)", "cn": "佳家汤包", "q": "佳家汤包 黄河路", "per": "¥40~60", "menu": "纯鲜肉汤包 돼지고기 탕바오 1판 ¥20~30 · 蟹粉汤包 게살 탕바오 ¥40~60 · 蛋皮汤 계란국", "tip": "현지인이 줄 서는 탕바오집 · 예약보다 줄서기 · 숙소에서 도보 약 15분"}, {"ko": "샤오양셩젠", "cn": "小杨生煎", "q": "小杨生煎 南京东路", "per": "¥30~50", "menu": "生煎包 군만두 4개 ¥15~20 · 牛肉粉丝汤 소고기 당면국 ¥15~20", "tip": "바닥이 바삭한 군만두 · 육즙이 뜨거우니 살짝 구멍 내서 · 체인점이라 어디서나"}, {"ko": "상하이 라오라오 가정식", "cn": "上海姥姥家常饭馆", "q": "上海姥姥家常饭馆 福州路", "per": "¥80~120", "menu": "红烧肉 홍샤오로우 · 糖醋排骨 탕수갈비 · 葱油拌面 파기름 비빔면", "tip": "숙소와 같은 푸저우루(70번지) · 상하이 가정식 · 10:30~21:30"}, {"ko": "하이디라오 (난징동루)", "cn": "海底捞火锅", "q": "海底捞 南京东路", "per": "¥100~150", "menu": "番茄锅 토마토탕 · 肥牛 소고기 · 虾滑 새우완자 · 捞面 수타면 쇼", "tip": "따종디엔핑에서 번호표(排队)·예약 가능 · 아이 동반 편함"}]}, {"area": "와이탄", "items": [{"ko": "와이포쟈 (외할머니집)", "cn": "外婆家", "q": "外婆家 南京东路", "per": "¥60~90", "menu": "外婆红烧肉 홍샤오로우 · 麻婆豆腐 마파두부 · 茶香鸡 차향 닭구이", "tip": "저렴한 항저우식 체인 · 가족 식사 무난 · 저녁엔 대기 있음"}]}, {"area": "예원 · 성황묘", "items": [{"ko": "남상만두 (예원점)", "cn": "南翔馒头店", "q": "南翔馒头店 豫园", "per": "¥60~90", "menu": "1층 포장 鲜肉小笼 6개 ¥30 · 2층 鲜肉小笼 6개 ¥38 / 蟹粉小笼 6개 ¥48 · 3층 蟹黄汤包 1개 ¥49", "tip": "1층 포장이 가장 저렴하지만 줄이 김 · 앉아서 먹으려면 2층 · 3층은 비싸고 경치 좋음"}, {"ko": "뤼보랑", "cn": "绿波廊", "q": "绿波廊 豫园", "per": "¥150~250", "menu": "眉毛酥 눈썹 모양 과자 · 三丝春卷 춘권 · 蟹粉小笼 게살 샤오롱바오", "tip": "예원 안 유명 상하이 요리집 · 창가 자리 원하면 따종디엔핑 예약"}]}, {"area": "신천지 · 임시정부 · 텐즈팡", "items": [{"ko": "딘타이펑 (신천지점)", "cn": "鼎泰丰", "q": "鼎泰丰 新天地", "per": "¥120~180", "menu": "小笼包 샤오롱바오 · 蟹粉小笼 게살 샤오롱바오 · 虾仁蛋炒饭 새우 볶음밥", "tip": "한국 딘타이펑과 비슷해 아이들도 무난 · 서비스료가 붙을 수 있음"}]}, {"area": "우캉루 · 우캉맨션", "items": [{"ko": "라오지스", "cn": "老吉士", "q": "老吉士 天平路", "per": "¥150~250", "menu": "红烧肉 홍샤오로우 · 葱烤大排 파 돼지갈비 · 蟹粉豆腐 게살 두부", "tip": "유명 상하이 요리집(톈핑루 41번지) · 예약이 매우 어려우니 일찍 예약"}, {"ko": "쿠쾅 젤라또", "cn": "酷矿gelato", "q": "酷矿gelato 武康大楼", "per": "¥30~45", "menu": "과일·피스타치오·초콜릿 젤라또", "tip": "우캉맨션 1층 · 사진 찍기 좋은 디저트 · 10:00~20:30"}]}, {"area": "상하이 디즈니랜드", "items": [{"ko": "로열 뱅큇 홀 (성 안 레스토랑)", "cn": "皇家宴会厅", "q": "", "per": "¥300 이상 (코스)", "menu": "스테이크 · 연어 · 어린이 미키 세트 · 디저트", "tip": "디즈니 공식 앱에서 예약 · 공주 캐릭터 식사 · 따종디엔핑 예약 아님"}, {"ko": "올드 트리 태번 (라푼젤 식당)", "cn": "老藤树食栈", "q": "", "per": "¥90~130", "menu": "烤鸡 로스트 치킨 · 炸鱼薯条 피시앤칩스 · 牛肉饭 소고기 덮밥", "tip": "점심은 11시 전에 먹으면 덜 붐빔"}, {"ko": "간식", "cn": "烤火鸡腿", "q": "", "per": "개당 ¥60~90", "menu": "烤火鸡腿 칠면조 다리 · 米奇冰淇淋 미키 아이스크림 · 鸭腿 오리 다리", "tip": "놀이기구 사이에 간식으로 · 한정 메뉴는 일찍 품절"}]}, {"area": "우전 (시짜)", "items": [{"ko": "서생 양고기면", "cn": "书生羊肉面", "q": "书生羊肉面 乌镇", "per": "¥40~60", "menu": "红烧羊肉面 양고기 조림 국수", "tip": "우전 대표 음식 · 시짜 거리 216번지"}, {"ko": "우마 훈툰", "cn": "吴妈馄饨", "q": "吴妈馄饨 乌镇", "per": "¥20~35", "menu": "招牌馄饨 대표 훈툰 · 鲜肉大馄饨 고기 훈툰", "tip": "가볍게 한 끼 · 아이들 먹기 좋음"}, {"ko": "마오라오타이 취두부", "cn": "茅老太臭豆腐", "q": "茅老太臭豆腐 乌镇", "per": "¥15~25", "menu": "臭豆腐 취두부", "tip": "냄새가 강해 호불호 · 투어에 식사가 포함됐는지 먼저 확인"}]}];
+function initRestos(){
+  const box = $("#restoList"); if(!box) return;
+  let n = 0;
+  box.innerHTML = RESTOS.map(a=>`<h3 class="rarea">📍 ${esc(a.area)}</h3>`+a.items.map(r=>{
+    const i = n++, enc = encodeURIComponent(r.q);
+    const dp = r.q ? `<a class="btn primary" data-app="dianping" data-path="searchshoplist?keyword=${enc}" data-web="https://m.dianping.com/" href="https://m.dianping.com/" target="_blank" rel="noopener">따종디엔핑 예약</a>` : "";
+    const am = r.q ? `<a class="btn" href="https://uri.amap.com/search?keyword=${enc}&city=310000&src=shanghai-trip" target="_blank" rel="noopener">고덕 검색</a>` : "";
+    return `<div class="rcard"><div class="rtop"><span class="rname">${esc(r.ko)}</span><span class="rper">1인 ${esc(r.per)}</span></div>`+
+      `<div class="rcn">${esc(r.cn)}</div>${pr(r.cn)}`+
+      `<div class="rmenu">🍽 ${esc(r.menu)}</div><div class="rtip">💡 ${esc(r.tip)}</div>`+
+      `<div class="cnrow2"><button type="button" class="btn rcopy" data-i="${i}">이름 복사</button>${dp}${am}</div></div>`;
+  }).join("")).join("");
+  const flat = RESTOS.flatMap(a=>a.items);
+  box.addEventListener("click", async e=>{
+    const b = e.target.closest(".rcopy"); if(!b) return;
+    flash(b, await copyText(flat[+b.dataset.i].cn), "이름 복사");
+  });
+}
+initRestos();
 /* ---------- 여행 기록 (GPS 이동 거리 · 걸은 거리 · 방문 장소) ---------- */
 const TRK_KEY = "sh-track", TRK_ON = "sh-track-on";
 const TRK_START = Date.parse("2026-10-26T00:00:00+08:00"), TRK_END = Date.parse("2026-10-29T23:59:59+08:00");
