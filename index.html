@@ -827,6 +827,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .interprow{display:flex !important;flex-direction:row;gap:8px;padding:8px !important;cursor:default}
 .interprow .ibtn{flex:1;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--fg);background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px}
 .interprow .ibtn b{display:block;font-size:15px}.interprow .ibtn small{display:block;color:var(--muted);font-size:12px}.interprow .ti{font-size:26px}
+.finder{margin-top:6px}
 .sheetbox{cursor:default}.sheet{background:var(--panel);color:var(--fg);border-radius:16px;padding:16px;max-width:420px;width:100%;text-align:left}
 .sheet h3{margin:0 0 8px}.sheet ol{margin:0 0 10px;padding-left:20px;line-height:1.6}
 .mapapps{display:flex;gap:8px;margin:0 0 10px}.mapapps .btn{flex:1;text-align:center;font-weight:600}
@@ -1050,29 +1051,10 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
   <!-- INFO -->
   <section class="tab" id="tab-info" data-tab="info">
     <details class="card fold" id="appTest" style="margin-bottom:12px">
-      <summary>📱 앱 바로가기 테스트 (갤럭시 S26 확인용)</summary>
-      <div class="small" style="margin:6px 0">버튼을 하나씩 눌러 보고 <b>앱이 바로 열린 번호</b>를 알려 주세요. 아무 반응이 없으면 실패예요.</div>
-      <div class="rslot">🔤 파파고</div>
-      <div class="btnrow">
-        <a class="btn" href="intent://#Intent;scheme=papago;end">P1</a>
-        <a class="btn" href="intent://papago.naver.com/#Intent;scheme=https;package=com.naver.labs.translator;end">P2</a>
-        <a class="btn" href="intent://#Intent;scheme=naverpapago;end">P3</a>
-        <a class="btn" href="intent://#Intent;scheme=papago;package=com.naver.labs.translator;end">P4</a>
-        <a class="btn" href="papago://">P5</a>
-        <a class="btn" href="intent://main#Intent;scheme=papago;end">P6</a>
-        <a class="btn" href="intent://translate#Intent;scheme=papago;end">P7</a>
-        <a class="btn" href="intent://text#Intent;scheme=papago;end">P8</a>
-        <a class="btn" href="intent://home#Intent;scheme=papago;end">P9</a>
-        <a class="btn" href="intent://papago.naver.net/#Intent;scheme=https;package=com.naver.labs.translator;end">P10</a>
-        <a class="btn" href="intent:#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.TEXT=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94;package=com.naver.labs.translator;end">P11</a>
-      </div>
-      <div class="rslot">🗣️ 갤럭시 통역</div>
-      <div class="btnrow">
-        <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.samsung.android.app.interpreter;end">T1</a>
-        <a class="btn" href="intent://#Intent;scheme=interpreter;end">T2</a>
-        <a class="btn" href="intent://#Intent;scheme=samsunginterpreter;end">T3</a>
-        <a class="btn" href="intent://ProductDetail/com.samsung.android.app.interpreter#Intent;scheme=samsungapps;package=com.sec.android.app.samsungapps;end">T4 갤럭시스토어</a>
-      </div>
+      <summary>📱 앱 바로가기 자동 찾기 (파파고 · 갤럭시 통역)</summary>
+      <div class="small" style="margin:6px 0">버튼을 누르면 앱 여는 방법을 하나씩 시도해요. 돌아와서 <b>열렸어요 / 안 열렸어요</b>만 누르면, 열린 방법을 이 휴대폰이 기억해서 홈 화면 버튼이 앱으로 바로 열려요.</div>
+      <div class="finder" id="finder-papago"></div>
+      <div class="finder" id="finder-interp"></div>
     </details>
     <h2>항공 · 숙소 · 여행자</h2>
     <div class="card">
@@ -1842,6 +1824,8 @@ function appHref(app, web, path){
 }
 async function openApp(app, web, copy, path){
   if(copy){ await copyText(copy); }
+  const ov = (/Android/i.test(navigator.userAgent||"")) && store.get("sh-app-"+app, null);
+  if(ov && ov.h){ location.href = ov.h; return; }
   const href = appHref(app, web, path);
   if(!href){ window.open(web, "_blank", "noopener"); return; }
   if(href.indexOf("intent:") === 0){ location.href = href; return; }
@@ -1982,12 +1966,42 @@ function interpSheet(){
   t.addEventListener("click", e=>{
     e.preventDefault();
     if(!/Android/i.test(navigator.userAgent||"")){ interpSheet(); return; }
+    const ov = store.get("sh-app-interp", null); if(ov && ov.h){ location.href = ov.h; return; }
     const back = location.href.split("#")[0] + "#interp";
     location.href = "intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.samsung.android.app.interpreter;S.browser_fallback_url=" + encodeURIComponent(back) + ";end";
   });
   const chk = ()=>{ if(location.hash === "#interp"){ history.replaceState(null, "", location.pathname + location.search); if(!document.querySelector(".sheetbox")) interpSheet(); } };
   chk(); window.addEventListener("hashchange", chk);
 })();
+
+/* ---------- 앱 바로가기 자동 찾기: 열린 방법을 휴대폰에 기억 ---------- */
+const APP_CANDS = {papago: ["intent://#Intent;scheme=papago;end", "intent://#Intent;scheme=papago;package=com.naver.labs.translator;end", "intent://main#Intent;scheme=papago;end", "intent://translate#Intent;scheme=papago;end", "intent://text#Intent;scheme=papago;end", "intent://home#Intent;scheme=papago;end", "intent://#Intent;scheme=naverpapago;end", "intent://papago.naver.com/#Intent;scheme=https;package=com.naver.labs.translator;end", "intent://papago.naver.net/#Intent;scheme=https;package=com.naver.labs.translator;end", "papago://", "intent:#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.TEXT=%E4%BD%A0%E5%A5%BD;package=com.naver.labs.translator;end"], interp: ["intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.samsung.android.app.interpreter;end", "intent://#Intent;scheme=interpreter;end", "intent://#Intent;scheme=samsunginterpreter;end", "intent://#Intent;scheme=interpreter;package=com.samsung.android.app.interpreter;end", "intent://interpreter#Intent;scheme=samsungai;end", "intent:#Intent;action=com.samsung.android.app.interpreter.action.MAIN;end"]};
+const APP_NAMES = {papago:"파파고", interp:"갤럭시 통역"};
+function appOverride(app){ return store.get("sh-app-"+app, null); }
+function renderFinder(app){
+  const box = $("#finder-"+app); if(!box) return;
+  const won = appOverride(app), pend = store.get("sh-app-pend", null), n = store.get("sh-app-idx-"+app, 0), list = APP_CANDS[app];
+  let h = `<div class="rslot">${app==="papago"?"🔤":"🗣️"} ${APP_NAMES[app]}</div>`;
+  if(won){ h += `<div class="rnote">✅ 찾았어요: 방법 ${won.i+1} · 홈 화면 버튼이 앱으로 바로 열려요</div><div class="btnrow"><a class="btn primary" href="${won.h}">${APP_NAMES[app]} 열어 보기</a><button type="button" class="btn" data-reset="${app}">다시 찾기</button></div>`; }
+  else if(pend && pend.app===app){ h += `<div class="rnote">방법 ${pend.i+1}/${list.length} 시도함 · ${APP_NAMES[app]} 앱이 열렸나요?</div><div class="btnrow"><button type="button" class="btn primary" data-yes="${app}">✅ 열렸어요</button><button type="button" class="btn" data-no="${app}">❌ 안 열렸어요 (다음)</button></div>`; }
+  else if(n >= list.length){ h += `<div class="rnote">모든 방법이 안 됐어요 · 휴대폰 홈 화면에 ${APP_NAMES[app]} 아이콘을 두고 쓰세요</div><div class="btnrow"><button type="button" class="btn" data-reset="${app}">처음부터 다시</button></div>`; }
+  else { h += `<div class="btnrow"><a class="btn primary" href="${list[n]}" data-try="${app}" data-i="${n}">▶ 방법 ${n+1}/${list.length} 시도</a></div>`; }
+  box.innerHTML = h;
+}
+function renderFinders(){ renderFinder("papago"); renderFinder("interp"); }
+document.addEventListener("click", e=>{
+  const t = e.target.closest("[data-try],[data-yes],[data-no],[data-reset]"); if(!t || !t.closest(".finder")) return;
+  if(t.dataset.try){ store.set("sh-app-pend", {app:t.dataset.try, i:+t.dataset.i}); setTimeout(renderFinders, 400); return; }
+  e.preventDefault();
+  const app = t.dataset.yes || t.dataset.no || t.dataset.reset;
+  const pend = store.get("sh-app-pend", null);
+  if(t.dataset.yes && pend){ store.set("sh-app-"+app, {i:pend.i, h:APP_CANDS[app][pend.i]}); store.set("sh-app-pend", null); }
+  if(t.dataset.no && pend){ store.set("sh-app-idx-"+app, pend.i+1); store.set("sh-app-pend", null); }
+  if(t.dataset.reset){ store.set("sh-app-"+app, null); store.set("sh-app-idx-"+app, 0); store.set("sh-app-pend", null); }
+  renderFinders();
+});
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) renderFinders(); });
+renderFinders();
 
 initRestos();
 initShops();
