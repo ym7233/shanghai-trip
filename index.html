@@ -821,6 +821,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .trkstats.static{cursor:default}
 .trkfoot{display:flex;justify-content:space-between;align-items:center;gap:8px}.trklink{color:#1f5fd1;font-weight:600}
 #trkMsg.on{color:var(--green);font-weight:600}#trkMsg.bad{color:var(--red)}
+.maphead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.maphead h2{margin:0}.maphead .btn{padding:7px 12px;font-size:14px;font-weight:600}
+.gpsout{margin:8px 0 12px}.gpsout:empty{display:none}
+.tile.wide{grid-column:1/-1;min-height:auto;flex-direction:row;align-items:center;gap:10px}.tile.wide .ti{font-size:26px}.tile.wide b{white-space:nowrap}
+.sheetbox{cursor:default}.sheet{background:var(--panel);color:var(--fg);border-radius:16px;padding:16px;max-width:420px;width:100%;text-align:left}
+.sheet h3{margin:0 0 8px}.sheet ol{margin:0 0 10px;padding-left:20px;line-height:1.6}
 .mapapps{display:flex;gap:8px;margin:0 0 10px}.mapapps .btn{flex:1;text-align:center;font-weight:600}
 .trkapps{display:flex;gap:8px;margin-top:10px}.trkapps .btn{flex:1;text-align:center}
 .trkhead{display:flex;align-items:center;gap:10px}.trkhead h2{margin:0}
@@ -899,6 +904,7 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <a class="tile" href="https://intl.alipay.com/" data-app="alipay" data-web="https://intl.alipay.com/" style="text-decoration:none"><span class="ti">🚕</span><b>디디택시</b><small>알리페이 앱 바로 열기</small></a>
       <a class="tile" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/" style="text-decoration:none"><span class="ti">🔤</span><b>파파고</b><small>중국어 번역 앱 바로 열기</small></a>
       <a class="tile" href="https://m.dianping.com/" data-app="dianping" data-path="" data-web="https://m.dianping.com/" style="text-decoration:none"><span class="ti">🍜</span><b>따종디엔핑</b><small>大众点评 · 맛집 검색 · 예약 · 줄서기</small></a>
+      <button class="tile wide" type="button" id="interpTile"><span class="ti">🗣️</span><b>갤럭시 통역</b><small>삼성 통역(Interpreter) 여는 방법 · 파파고 대화 통역</small></button>
     </div>
   </section>
 
@@ -950,23 +956,14 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
 
   <!-- GAME MAP -->
   <section class="tab" id="tab-map" data-tab="map">
-    <h2>여행 지도</h2>
+    <div class="maphead"><h2>여행 지도</h2><button class="btn primary" id="gpsBtn" type="button">📍 내 위치 켜기</button><button class="btn" id="gpsStop" type="button" hidden>📍 위치 끄기</button></div>
     <div id="viewAmap">
       <div class="mapapps"><a class="btn" data-app="gmaps" data-path="www.google.com/maps/@31.2330,121.4800,13z" data-web="https://www.google.com/maps/@31.2330,121.4800,13z" href="https://www.google.com/maps/@31.2330,121.4800,13z" target="_blank" rel="noopener">🗺️ 구글 지도 앱</a><a class="btn primary" data-app="amapapp" data-path="viewMap?sourceApplication=shanghai-trip&amp;poiname=%E4%B8%8A%E6%B5%B7&amp;lat=31.2330&amp;lon=121.4800&amp;dev=0" data-web="https://www.amap.com/" href="https://www.amap.com/" target="_blank" rel="noopener">🧭 고덕지도 앱</a></div>
       <div class="mapbox"><div id="amap" style="height:min(36vh,300px);width:100%"></div></div>
           </div>
-    <div class="card">
-      <div class="row" style="align-items:center">
-        <div class="grow">
-          <h3>내 위치 (GPS)</h3>
-        </div>
-      </div>
-      <div class="btnrow">
-        <button class="btn primary" id="gpsBtn" type="button">📍 내 위치 켜기</button>
-        <button class="btn" id="gpsStop" type="button" hidden>위치 끄기</button>
-      </div>
+    <div class="gpsout">
       <div class="gps-msg" id="gpsMsg"></div>
-      <div id="gpsInfo" class="small" style="margin-top:8px"></div>
+      <div id="gpsInfo" class="small"></div>
       <div class="btnrow" id="gpsLinks"></div>
     </div>
       <details class="card fold" id="restoFold" style="margin-bottom:12px">
@@ -1417,7 +1414,7 @@ function onPos(pos){
   refreshAmap(false);
   const g = wgs2gcj(userPos.lat,userPos.lng);
   $("#gpsInfo").innerHTML = `위치 확보 · 정확도 약 ${Math.round(userPos.acc)}m · 좌표(WGS-84) ${userPos.lat.toFixed(5)}, ${userPos.lng.toFixed(5)}` + (inMap(userPos.lat,userPos.lng)? "" : "<br><span style='color:var(--gold)'>현재 위치가 지도 범위 밖입니다. 아래 가오더 링크로 확인하세요.</span>");
-  $("#gpsLinks").innerHTML = `<a class="btn gold" href="${amapLink(userPos.lat,userPos.lng,'내 위치')}" target="_blank" rel="noopener">가오더(Amap)에서 내 위치 열기</a>`;
+  $("#gpsLinks").innerHTML = `<a class="btn gold" href="${amapLink(userPos.lat,userPos.lng,'내 위치')}" target="_blank" rel="noopener">고덕지도에서 내 위치 열기</a>`;
   setMsg("내 위치 표시 중");
   $("#gpsBtn").hidden = true; $("#gpsStop").hidden = false;
 }
@@ -1931,6 +1928,27 @@ document.addEventListener("click", e=>{
   ov.addEventListener("click", ()=>ov.remove());
   document.body.appendChild(ov);
 });
+
+/* 갤럭시 통역: 웹에서 바로 실행할 수 없어 여는 방법 + 파파고 대안 */
+(function(){
+  const t = $("#interpTile"); if(!t) return;
+  t.addEventListener("click", ()=>{
+    const ov = document.createElement("div");
+    ov.className = "lightbox sheetbox";
+    ov.innerHTML = `<div class="sheet" role="dialog" aria-label="갤럭시 통역 여는 방법">
+      <h3>🗣️ 갤럭시 통역 여는 방법</h3>
+      <ol>
+        <li>화면 맨 위에서 아래로 <b>두 번</b> 쓸어내려 빠른 설정 열기</li>
+        <li><b>통역</b> 버튼 누르기 · 없으면 연필(편집) 아이콘에서 추가</li>
+        <li>상대 언어를 <b>中文(简体) 중국어 간체</b>로 선택</li>
+      </ol>
+      <div class="small">💡 통역 앱 왼쪽 메뉴에서 <b>'앱스 화면에 추가'</b>를 누르면 홈 화면 아이콘으로 바로 실행할 수 있어요<br>💡 출발 전 통역 설정에서 중국어 언어팩을 미리 받아 두기</div>
+      <div class="btnrow" style="margin-top:12px"><a class="btn primary" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/">🔤 파파고 대화 통역 열기</a><button type="button" class="btn" data-close>닫기</button></div>
+    </div>`;
+    ov.addEventListener("click", e=>{ if(e.target === ov || e.target.closest("[data-close]")) ov.remove(); });
+    document.body.appendChild(ov);
+  });
+})();
 
 initRestos();
 initShops();
