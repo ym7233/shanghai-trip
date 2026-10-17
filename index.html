@@ -72,7 +72,7 @@ section.tab.on{display:block}
 .tag.w{background:var(--red);color:#2a0800}
 /* map */
 .mapbox{background:#ffffff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.mapbox svg{display:block;width:100%;height:auto}
+.mapbox>svg{display:block;width:100%;height:auto}
 .legend{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
 .quest{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line)}
 .quest:last-child{border-bottom:0}
@@ -815,7 +815,20 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .wxd.trip{border-color:var(--gold);background:#fff6dc}
 .wxd .wdt{font-size:12.5px;font-weight:700}.wxd .wic{font-size:26px;line-height:1.3}.wxd .wds{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wxd .wtp{font-size:13.5px;font-weight:700;margin-top:2px}.wxd .wtp .lo{color:#1f5fd1}.wxd .wtp .hi{color:var(--red)}.wxd .wpp{font-size:12px;color:#1f5fd1}.wxd .wtag{font-size:11px;color:var(--gold);font-weight:700}
-.wxlinks{display:flex;gap:6px}.wxfoot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.wxlinks{display:flex;gap:6px}.trkstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 6px;width:100%;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:center;cursor:pointer}
+.trkstats>div{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 4px;min-width:0}
+.trkstats span{display:block;font-size:12px;color:var(--muted)}.trkstats b{display:block;font-size:19px;line-height:1.3}.trkstats small{display:block;font-size:11.5px;color:var(--muted)}
+.trkstats.static{cursor:default}
+.trkfoot{display:flex;justify-content:space-between;align-items:center;gap:8px}.trklink{color:#1f5fd1;font-weight:600}
+#trkMsg.on{color:var(--green);font-weight:600}#trkMsg.bad{color:var(--red)}
+.trkhead{display:flex;align-items:center;gap:10px}.trkhead h2{margin:0}
+.trkday{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:12px}
+.trkday h3{margin:0 0 4px;font-size:16px}.trkday .sum{font-size:13px;color:var(--muted);margin-bottom:6px}
+.trkday ol{margin:0;padding-left:0;list-style:none}.trkday li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--line);cursor:pointer}
+.trkday li .n{flex:0 0 24px;height:24px;border-radius:50%;background:#1f5fd1;color:#fff;font:700 12px/24px system-ui,sans-serif;text-align:center}
+.trkday li .tm{font-size:12.5px;color:var(--muted)}
+.tpin{width:24px;height:24px;border-radius:50%;background:#1f5fd1;border:2px solid #fff;color:#fff;font:700 12px/20px system-ui,sans-serif;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.wxfoot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .cncn{font-size:18px;font-weight:600;user-select:text;-webkit-user-select:text;flex:1 1 auto}.cnrow2 .btn{padding:6px 10px;font-size:13px}
 .dis-ul{margin:0;padding-left:20px;line-height:1.6}.dis-ul li{margin-bottom:4px}
 details.dis-fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:none}details.dis-fold>summary::-webkit-details-marker{display:none}details.dis-fold>summary::before{content:'▾ ';color:var(--muted)}details.dis-fold:not([open])>summary::before{content:'▸ '}details.dis-fold[open] img{margin-top:6px}
@@ -837,6 +850,15 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <div class="wxhead"><b>⛅ 상하이 날씨 · 10/26~10/29</b><button type="button" class="btn" id="wxRefresh">새로고침</button></div>
       <div class="wxgrid" id="wxBody"><div class="muted small">불러오는 중…</div></div>
       <div class="wxfoot"><span class="muted small" id="wxTime"></span><span class="wxlinks"><a class="btn" href="https://search.naver.com/search.naver?query=%EC%83%81%ED%95%98%EC%9D%B4+%EB%82%A0%EC%94%A8" target="_blank" rel="noopener">네이버 날씨</a><a class="btn" href="http://www.weather.com.cn/weather/101020100.shtml" target="_blank" rel="noopener">중국 날씨</a></span></div>
+    </div>
+    <div class="card" id="trkCard" style="margin-top:12px">
+      <div class="wxhead"><b>👣 여행 기록</b><button type="button" class="btn" id="trkToggle">기록 켜기</button></div>
+      <button type="button" class="trkstats" id="trkOpen" aria-label="이동한 장소 보기">
+        <div><span>총 이동</span><b id="trkTotal">0.0km</b></div>
+        <div><span>걸은 거리</span><b id="trkWalk">0.0km</b><small id="trkSteps"></small></div>
+        <div><span>방문 장소</span><b id="trkPlaces">0곳</b></div>
+      </button>
+      <div class="trkfoot"><span class="small" id="trkMsg"></span><span class="small trklink">장소 보기 ›</span></div>
     </div>
         <div class="tiles">
       <button class="tile" type="button" data-go="sched"><span class="ti">🗓️</span><b>일정</b><small>4일 전체 시간표 · 날짜별 보기</small></button>
@@ -1039,6 +1061,14 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
         <li><div class="cn"><b>여행자보험 긴급 번호</b><span class="muted small">보험 증권에서 확인해 알려주시면 추가합니다</span></div></li>
       </ul>
     </div>
+  </section>
+
+  <section class="tab" id="tab-track" data-tab="track">
+    <div class="trkhead"><button type="button" class="btn" id="trkBack">← 홈</button><h2>여행 기록</h2></div>
+    <div class="trkstats static" id="trkStats2"></div>
+    <div class="mapbox" style="margin-top:12px"><div id="trkMap" style="height:min(55vh,460px);width:100%"></div></div>
+    <div id="trkDays"></div>
+    <div style="margin:16px 0 8px;text-align:right"><button type="button" class="btn" id="trkClear">기록 지우기</button></div>
   </section>
 
   <footer>상하이 여행 · 엑셀 '상하이' 탭 기반 · 좌표는 주요 장소의 개략 위치입니다.</footer>
@@ -1768,6 +1798,170 @@ document.addEventListener("click", function(e){
 }, true);
 initCn();
 initHotelCard();
+/* ---------- 여행 기록 (GPS 이동 거리 · 걸은 거리 · 방문 장소) ---------- */
+const TRK_KEY = "sh-track", TRK_ON = "sh-track-on";
+const TRK_START = Date.parse("2026-10-26T00:00:00+08:00"), TRK_END = Date.parse("2026-10-29T23:59:59+08:00");
+const TRK_BOX = {s:30.4, n:31.9, w:120.2, e:122.2};   // 상하이 + 우전 권역
+let trkPts = store.get(TRK_KEY, []);                    // [[t, lat, lng, acc], ...]
+let trkWatch = null, trkMap = null, trkLayer = null, trkLastUI = 0;
+function trkInBox(la, ln){ return la>=TRK_BOX.s && la<=TRK_BOX.n && ln>=TRK_BOX.w && ln<=TRK_BOX.e; }
+function trkDay(t){ return new Date(t+8*3600e3).toISOString().slice(0,10); }
+function trkHM(t){ return new Date(t+8*3600e3).toISOString().slice(11,16); }
+function trkName(la, ln){
+  let best = null, bd = 1e9;
+  PLACES.forEach(p=>{ const d = haversine(la, ln, p.lat, p.lng); if(d < bd){ bd = d; best = p.n; } });
+  if(bd <= 350) return best;
+  CN_PLACES.forEach(p=>{ if(!p.lat) return; const d = haversine(la, ln, p.lat, p.lng); if(d < bd){ bd = d; best = p.ko; } });
+  return bd <= 350 ? best : null;
+}
+function trkAnalyze(pts){
+  const days = {}, segs = [];
+  const D = k => days[k] || (days[k] = {total:0, walk:0, stays:[]});
+  let total = 0, walk = 0, anchor = null, seg = [];
+  pts.forEach(p=>{
+    const [t, la, ln, acc] = p;
+    if(!anchor){ anchor = p; seg.push([la, ln]); return; }
+    const dt = (t - anchor[0]) / 1000;
+    if(dt > 900){ if(seg.length > 1) segs.push(seg); seg = []; }
+    const d = haversine(anchor[1], anchor[2], la, ln);
+    if(d >= Math.max(25, acc || 0)){
+      total += d; D(trkDay(t)).total += d;
+      if(dt <= 900 && d / Math.max(dt, 1) <= 2.2){ walk += d; D(trkDay(t)).walk += d; }
+      anchor = p;
+    }
+    seg.push([la, ln]);
+  });
+  if(seg.length > 1) segs.push(seg);
+  // 머문 곳: 반경 100m 안에 7분 이상
+  const stays = [];
+  let c = null;
+  const close = () => { if(c && c.end - c.start >= 7*60e3) stays.push(c); };
+  pts.forEach(([t, la, ln])=>{
+    if(c && haversine(c.lat, c.lng, la, ln) <= 100 && t - c.end <= 30*60e3){
+      c.n++; c.lat += (la - c.lat)/c.n; c.lng += (ln - c.lng)/c.n; c.end = t;
+    } else { close(); c = {lat:la, lng:ln, start:t, end:t, n:1}; }
+  });
+  close();
+  // 같은 장소 연속이면 합치기
+  const merged = [];
+  stays.forEach(s=>{
+    s.name = trkName(s.lat, s.lng);
+    const last = merged[merged.length-1];
+    if(last && ((s.name && s.name === last.name) || haversine(last.lat, last.lng, s.lat, s.lng) < 150) && s.start - last.end < 45*60e3){ last.end = s.end; }
+    else merged.push(s);
+  });
+  let unk = 0;
+  merged.forEach(s=>{ if(!s.name) s.name = "머문 곳 " + (++unk); D(trkDay(s.start)).stays.push(s); });
+  const uniq = new Set(merged.map(s=>s.name)).size;
+  return {total, walk, stays:merged, uniq, days, segs};
+}
+const km = m => (m/1000).toFixed(m < 10000 ? 1 : 0) + "km";
+function trkRenderHome(){
+  const a = trkAnalyze(trkPts);
+  $("#trkTotal").textContent = km(a.total);
+  $("#trkWalk").textContent = km(a.walk);
+  $("#trkSteps").textContent = a.walk ? "약 " + Math.round(a.walk/0.7).toLocaleString("ko-KR") + "걸음" : "";
+  $("#trkPlaces").textContent = a.uniq + "곳";
+  return a;
+}
+function trkMsg(t, cls){ const m = $("#trkMsg"); if(!m) return; m.textContent = t; m.className = "small" + (cls ? " " + cls : ""); }
+function trkStatus(){
+  const now = Date.now(), on = !!trkWatch;
+  $("#trkToggle").textContent = on ? "기록 끄기" : "기록 켜기";
+  if(!on) return trkMsg(trkPts.length ? "기록 꺼짐" : "꺼짐");
+  if(now < TRK_START) return trkMsg("켜짐 · 10/26 상하이 도착 후 기록", "on");
+  if(now > TRK_END) return trkMsg("여행 기록 끝", "on");
+  trkMsg("● 기록 중", "on");
+}
+function trkOnPos(pos){
+  const t = pos.timestamp || Date.now(), la = pos.coords.latitude, ln = pos.coords.longitude, acc = pos.coords.accuracy || 0;
+  if(t < TRK_START || t > TRK_END){ trkStatus(); return; }
+  if(!trkInBox(la, ln)){ trkMsg("● 켜짐 · 상하이 도착 후 기록", "on"); return; }
+  if(acc > 80) return;
+  const last = trkPts[trkPts.length-1];
+  if(last){
+    const d = haversine(last[1], last[2], la, ln);
+    if(d < 20 && t - last[0] < 120e3) return;
+  }
+  trkPts.push([t, +la.toFixed(6), +ln.toFixed(6), Math.round(acc)]);
+  store.set(TRK_KEY, trkPts);
+  trkStatus();
+  if(Date.now() - trkLastUI > 5000){ trkLastUI = Date.now(); trkRenderHome(); if(document.querySelector("#tab-track.on")) trkRenderDetail(); }
+}
+function trkOnErr(e){
+  if(e && e.code === 1){ trkStop(); trkMsg("위치 권한을 허용해 주세요", "bad"); }
+}
+function trkStart(){
+  if(!("geolocation" in navigator)){ trkMsg("이 브라우저에서는 기록할 수 없어요", "bad"); return; }
+  if(trkWatch !== null) return;
+  try{ trkWatch = navigator.geolocation.watchPosition(trkOnPos, trkOnErr, {enableHighAccuracy:true, maximumAge:15000, timeout:60000}); }
+  catch(e){ trkWatch = null; trkMsg("기록을 시작하지 못했어요", "bad"); return; }
+  store.set(TRK_ON, true); trkStatus();
+}
+function trkStop(){
+  if(trkWatch !== null){ try{ navigator.geolocation.clearWatch(trkWatch); }catch(e){} }
+  trkWatch = null; store.set(TRK_ON, false); trkStatus();
+}
+function trkRenderDetail(){
+  const a = trkAnalyze(trkPts);
+  $("#trkStats2").innerHTML =
+    `<div><span>총 이동</span><b>${km(a.total)}</b></div>`+
+    `<div><span>걸은 거리</span><b>${km(a.walk)}</b><small>${a.walk ? "약 "+Math.round(a.walk/0.7).toLocaleString("ko-KR")+"걸음" : ""}</small></div>`+
+    `<div><span>방문 장소</span><b>${a.uniq}곳</b></div>`;
+  const W = ["일","월","화","수","목","금","토"];
+  const keys = Object.keys(a.days).sort();
+  let n = 0;
+  $("#trkDays").innerHTML = keys.length ? keys.map(k=>{
+    const d = a.days[k], dt = new Date(k+"T12:00:00+08:00");
+    const trip = TRIP_DAYS[k];
+    return `<div class="trkday"><h3>${+k.slice(5,7)}/${+k.slice(8,10)} ${W[dt.getUTCDay()]}${trip?` · ${trip}일차`:""}</h3>`+
+      `<div class="sum">이동 ${km(d.total)} · 걸음 ${km(d.walk)}</div>`+
+      (d.stays.length ? `<ol>${d.stays.map(s=>{ n++; const mins = Math.round((s.end-s.start)/60e3);
+        return `<li data-la="${s.lat}" data-ln="${s.lng}"><span class="n">${n}</span><div><b>${esc(s.name)}</b><div class="tm">${trkHM(s.start)}~${trkHM(s.end)} · ${mins >= 60 ? Math.floor(mins/60)+"시간 "+(mins%60)+"분" : mins+"분"}</div></div></li>`; }).join("")}</ol>` : `<div class="muted small">머문 곳 없음</div>`)+
+      `</div>`;
+  }).join("") : `<div class="trkday"><div class="muted small">아직 기록이 없어요 · 상하이 도착 후 '기록 켜기'</div></div>`;
+  // 지도
+  if(typeof L === "undefined") return;
+  if(!trkMap){
+    const c = wgs2gcj(31.2330, 121.4800);
+    trkMap = L.map("trkMap", {zoomControl:true, attributionControl:false}).setView([c.lat, c.lng], 12);
+    L.tileLayer(AMAP_TILE, {subdomains:"1234", maxZoom:18}).addTo(trkMap);
+    trkLayer = L.layerGroup().addTo(trkMap);
+  }
+  trkLayer.clearLayers();
+  const bounds = [];
+  a.segs.forEach(sg=>{
+    const ll = sg.map(([la, ln])=>{ const g = wgs2gcj(la, ln); bounds.push([g.lat, g.lng]); return [g.lat, g.lng]; });
+    L.polyline(ll, {color:"#1f5fd1", weight:4, opacity:.85}).addTo(trkLayer);
+  });
+  a.stays.forEach((s, i)=>{
+    const g = wgs2gcj(s.lat, s.lng); bounds.push([g.lat, g.lng]);
+    L.marker([g.lat, g.lng], {icon:L.divIcon({className:"", iconSize:[24,24], iconAnchor:[12,12], html:`<div class="tpin">${i+1}</div>`})})
+      .addTo(trkLayer).bindPopup(`<b>${esc(s.name)}</b><br>${trkHM(s.start)}~${trkHM(s.end)}`);
+  });
+  setTimeout(()=>{ trkMap.invalidateSize(); if(bounds.length) trkMap.fitBounds(bounds, {padding:[24,24], maxZoom:16, animate:false}); }, 60);
+}
+(function(){
+  if(!$("#trkCard")) return;
+  trkRenderHome(); trkStatus();
+  $("#trkToggle").addEventListener("click", ()=>{ trkWatch === null ? trkStart() : trkStop(); });
+  $("#trkOpen").addEventListener("click", ()=>{ show("track"); trkRenderDetail(); });
+  $(".trklink").addEventListener("click", ()=>{ show("track"); trkRenderDetail(); });
+  $("#trkBack").addEventListener("click", ()=>show("home"));
+  $("#trkDays").addEventListener("click", e=>{
+    const li = e.target.closest("li[data-la]"); if(!li || !trkMap) return;
+    const g = wgs2gcj(+li.dataset.la, +li.dataset.ln);
+    trkMap.setView([g.lat, g.lng], 16); window.scrollTo({top:0, behavior:"smooth"});
+  });
+  const clr = $("#trkClear"); let armed = 0;
+  clr.addEventListener("click", ()=>{
+    if(Date.now() - armed > 4000){ armed = Date.now(); clr.textContent = "한 번 더 누르면 삭제"; setTimeout(()=>{ clr.textContent = "기록 지우기"; }, 4000); return; }
+    trkPts = []; store.set(TRK_KEY, trkPts); armed = 0; clr.textContent = "기록 지우기"; trkRenderHome(); trkRenderDetail(); trkStatus();
+  });
+  if(store.get(TRK_ON, false)) trkStart();
+  document.addEventListener("visibilitychange", ()=>{ if(!document.hidden){ trkRenderHome(); trkStatus(); } });
+})();
+
 /* ---------- Shanghai weather (Open-Meteo, no key) ---------- */
 const WX_URL = "https://api.open-meteo.com/v1/forecast?latitude=31.2304&longitude=121.4737&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FShanghai&start_date=2026-10-26&end_date=2026-10-29";
 const TRIP_DAYS = {"2026-10-26":1,"2026-10-27":2,"2026-10-28":3,"2026-10-29":4};
