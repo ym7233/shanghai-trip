@@ -1049,6 +1049,25 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
 
   <!-- INFO -->
   <section class="tab" id="tab-info" data-tab="info">
+    <details class="card fold" id="appTest" style="margin-bottom:12px">
+      <summary>📱 앱 바로가기 테스트 (갤럭시 S26 확인용)</summary>
+      <div class="small" style="margin:6px 0">버튼을 하나씩 눌러 보고 <b>앱이 바로 열린 번호</b>를 알려 주세요. 아무 반응이 없으면 실패예요.</div>
+      <div class="rslot">🔤 파파고</div>
+      <div class="btnrow">
+        <a class="btn" href="intent://#Intent;scheme=papago;end">P1</a>
+        <a class="btn" href="intent://papago.naver.com/#Intent;scheme=https;package=com.naver.labs.translator;end">P2</a>
+        <a class="btn" href="intent://#Intent;scheme=naverpapago;end">P3</a>
+        <a class="btn" href="intent://#Intent;scheme=papago;package=com.naver.labs.translator;end">P4</a>
+        <a class="btn" href="intent://details?id=com.naver.labs.translator#Intent;scheme=market;package=com.android.vending;end">P5 플레이스토어</a>
+      </div>
+      <div class="rslot">🗣️ 갤럭시 통역</div>
+      <div class="btnrow">
+        <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.samsung.android.app.interpreter;end">T1</a>
+        <a class="btn" href="intent://#Intent;scheme=interpreter;end">T2</a>
+        <a class="btn" href="intent://#Intent;scheme=samsunginterpreter;end">T3</a>
+        <a class="btn" href="intent://ProductDetail/com.samsung.android.app.interpreter#Intent;scheme=samsungapps;package=com.sec.android.app.samsungapps;end">T4 갤럭시스토어</a>
+      </div>
+    </details>
     <h2>항공 · 숙소 · 여행자</h2>
     <div class="card">
       <h3>항공</h3>
@@ -1804,14 +1823,14 @@ function appHref(app, web, path){
   const m = {
     alipay:{pkg:"com.eg.android.AlipayGphone", scheme:"alipays", ios:"alipays://"},
     didi:{pkg:"com.didiglobal.passenger", scheme:"diditaxi", ios:"diditaxi://"},
-    papago:{pkg:"com.naver.labs.translator", scheme:"papago", ios:"papago://"},
+    papago:{pkg:"com.naver.labs.translator", scheme:"https", host:"papago.naver.com/", ios:"papago://", store:"https://play.google.com/store/apps/details?id=com.naver.labs.translator"},
     tmap:{pkg:"com.skt.tmap.ku", scheme:"tmap", ios:"tmap://"},
     gmaps:{pkg:"com.google.android.apps.maps", scheme:"https", ios:"comgooglemaps://"},
     amapapp:{pkg:"com.autonavi.minimap", scheme:"androidamap", ios:"iosamap://"},
     dianping:{pkg:"", scheme:"dianping", ios:"dianping://"}
   }[app];
   if(!m) return null;
-  if(android) return "intent://"+(path||"")+"#Intent;scheme="+m.scheme+(m.pkg ? ";package="+m.pkg : "")+";S.browser_fallback_url="+encodeURIComponent(web)+";end";
+  if(android) return "intent://"+(path||m.host||"")+"#Intent;scheme="+m.scheme+(m.pkg ? ";package="+m.pkg : "")+";S.browser_fallback_url="+encodeURIComponent(m.store||web)+";end";
   if(ios) return m.ios+(path||"");
   return null;
 }
@@ -1940,14 +1959,14 @@ function interpSheet(){
   const ov = document.createElement("div");
   ov.className = "lightbox sheetbox";
   ov.innerHTML = `<div class="sheet" role="dialog" aria-label="갤럭시 통역 여는 방법">
-    <h3>🗣️ 통역 앱이 바로 안 열리면</h3>
+    <h3>🗣️ 통역 앱이 바로 안 열렸어요</h3><div class="small" style="margin-bottom:8px">아래 <b>갤럭시 스토어</b> 버튼 → <b>열기</b>를 누르면 통역 앱이 실행돼요</div>
     <ol>
       <li>화면 맨 위에서 아래로 <b>두 번</b> 쓸어내려 빠른 설정 열기</li>
       <li><b>통역</b> 버튼 누르기 · 없으면 연필(편집) 아이콘에서 추가</li>
       <li>상대 언어를 <b>中文(简体) 중국어 간체</b>로 선택</li>
     </ol>
     <div class="small">💡 통역 앱 왼쪽 메뉴에서 <b>'앱스 화면에 추가'</b> → 휴대폰 홈 화면 아이콘으로 바로 실행<br>💡 출발 전 통역 설정에서 중국어 언어팩 미리 받기</div>
-    <div class="btnrow" style="margin-top:12px"><a class="btn primary" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/">🔤 파파고 열기</a><button type="button" class="btn" data-close>닫기</button></div>
+    <div class="btnrow" style="margin-top:12px"><a class="btn primary" href="intent://ProductDetail/com.samsung.android.app.interpreter#Intent;scheme=samsungapps;package=com.sec.android.app.samsungapps;end">🛍️ 갤럭시 스토어에서 통역 열기</a><a class="btn" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/">🔤 파파고 열기</a><button type="button" class="btn" data-close>닫기</button></div>
   </div>`;
   ov.addEventListener("click", e=>{ if(e.target === ov || e.target.closest("[data-close]")) ov.remove(); });
   document.body.appendChild(ov);
