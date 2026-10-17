@@ -1,6 +1,6 @@
 // 상하이 여행 앱 오프라인 지원
 // 앱 화면(HTML)은 인터넷이 되면 항상 최신으로 받고, 안 되면 저장본을 보여줍니다.
-const APP = "sh-app-202610171738";
+const APP = "sh-app-202610171741";
 const TILES = "sh-tiles-v1";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 
