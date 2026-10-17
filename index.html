@@ -828,9 +828,6 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
   <header class="hdr">
     <h1>상하이 3박 4일 · 여행 지도</h1>
     <div class="sub">10/26(월) ~ 10/29(목) · 시간 표기는 <b>중국 현지시간</b> 기준 (한국보다 1시간 느림). 1일차 항공편만 한국시간(KST).</div>
-    <div class="hud">
-      <div class="card"><span class="muted small">출발까지</span><b id="dday">-</b></div>
-    </div>
   </header>
 
   <!-- HOME -->
@@ -1215,7 +1212,7 @@ nav.addEventListener("click", e=>{ const b=e.target.closest("button[data-go]"); 
   const kst = new Date(Date.now()+9*3600e3);
   const today = Date.UTC(kst.getUTCFullYear(), kst.getUTCMonth(), kst.getUTCDate());
   const diff = Math.round((Date.UTC(2026,9,26) - today)/864e5);
-  $("#dday").textContent = diff>0 ? "D-"+diff : diff===0 ? "오늘 출발!" : "여행 중/종료";
+  if($("#dday")) $("#dday").textContent = diff>0 ? "D-"+diff : diff===0 ? "오늘 출발!" : "여행 중/종료";
 })();
 
 /* ---------- today tab ---------- */
