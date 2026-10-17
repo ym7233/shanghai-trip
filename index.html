@@ -824,6 +824,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .maphead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.maphead h2{margin:0}.maphead .btn{padding:7px 12px;font-size:14px;font-weight:600}
 .gpsout{margin:8px 0 12px}.gpsout:empty{display:none}
 .tile.wide{grid-column:1/-1;min-height:auto;flex-direction:row;align-items:center;gap:10px}.tile.wide .ti{font-size:26px}.tile.wide b{white-space:nowrap}
+.interprow{display:flex !important;flex-direction:row;gap:8px;padding:8px !important;cursor:default}
+.interprow .ibtn{flex:1;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--fg);background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px}
+.interprow .ibtn b{display:block;font-size:15px}.interprow .ibtn small{display:block;color:var(--muted);font-size:12px}.interprow .ti{font-size:26px}
 .sheetbox{cursor:default}.sheet{background:var(--panel);color:var(--fg);border-radius:16px;padding:16px;max-width:420px;width:100%;text-align:left}
 .sheet h3{margin:0 0 8px}.sheet ol{margin:0 0 10px;padding-left:20px;line-height:1.6}
 .mapapps{display:flex;gap:8px;margin:0 0 10px}.mapapps .btn{flex:1;text-align:center;font-weight:600}
@@ -904,7 +907,10 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <a class="tile" href="https://intl.alipay.com/" data-app="alipay" data-web="https://intl.alipay.com/" style="text-decoration:none"><span class="ti">🚕</span><b>디디택시</b><small>알리페이 앱 바로 열기</small></a>
       <a class="tile" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/" style="text-decoration:none"><span class="ti">🔤</span><b>파파고</b><small>중국어 번역 앱 바로 열기</small></a>
       <a class="tile" href="https://m.dianping.com/" data-app="dianping" data-path="" data-web="https://m.dianping.com/" style="text-decoration:none"><span class="ti">🍜</span><b>따종디엔핑</b><small>大众点评 · 맛집 검색 · 예약 · 줄서기</small></a>
-      <button class="tile wide" type="button" id="interpTile"><span class="ti">🗣️</span><b>갤럭시 통역</b><small>삼성 통역(Interpreter) 여는 방법 · 파파고 대화 통역</small></button>
+      <div class="tile wide interprow">
+        <a class="ibtn" href="#interp" id="interpTile"><span class="ti">🗣️</span><span><b>갤럭시 통역</b><small>통역 앱 바로 열기</small></span></a>
+        <a class="ibtn" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/"><span class="ti">🔤</span><span><b>파파고</b><small>파파고 앱 바로 열기</small></span></a>
+      </div>
     </div>
   </section>
 
@@ -1929,25 +1935,33 @@ document.addEventListener("click", e=>{
   document.body.appendChild(ov);
 });
 
-/* 갤럭시 통역: 웹에서 바로 실행할 수 없어 여는 방법 + 파파고 대안 */
+/* 갤럭시 통역(삼성 Interpreter, com.samsung.android.app.interpreter) 바로 열기 · 실패하면 여는 방법 안내 */
+function interpSheet(){
+  const ov = document.createElement("div");
+  ov.className = "lightbox sheetbox";
+  ov.innerHTML = `<div class="sheet" role="dialog" aria-label="갤럭시 통역 여는 방법">
+    <h3>🗣️ 통역 앱이 바로 안 열리면</h3>
+    <ol>
+      <li>화면 맨 위에서 아래로 <b>두 번</b> 쓸어내려 빠른 설정 열기</li>
+      <li><b>통역</b> 버튼 누르기 · 없으면 연필(편집) 아이콘에서 추가</li>
+      <li>상대 언어를 <b>中文(简体) 중국어 간체</b>로 선택</li>
+    </ol>
+    <div class="small">💡 통역 앱 왼쪽 메뉴에서 <b>'앱스 화면에 추가'</b> → 휴대폰 홈 화면 아이콘으로 바로 실행<br>💡 출발 전 통역 설정에서 중국어 언어팩 미리 받기</div>
+    <div class="btnrow" style="margin-top:12px"><a class="btn primary" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/">🔤 파파고 열기</a><button type="button" class="btn" data-close>닫기</button></div>
+  </div>`;
+  ov.addEventListener("click", e=>{ if(e.target === ov || e.target.closest("[data-close]")) ov.remove(); });
+  document.body.appendChild(ov);
+}
 (function(){
   const t = $("#interpTile"); if(!t) return;
-  t.addEventListener("click", ()=>{
-    const ov = document.createElement("div");
-    ov.className = "lightbox sheetbox";
-    ov.innerHTML = `<div class="sheet" role="dialog" aria-label="갤럭시 통역 여는 방법">
-      <h3>🗣️ 갤럭시 통역 여는 방법</h3>
-      <ol>
-        <li>화면 맨 위에서 아래로 <b>두 번</b> 쓸어내려 빠른 설정 열기</li>
-        <li><b>통역</b> 버튼 누르기 · 없으면 연필(편집) 아이콘에서 추가</li>
-        <li>상대 언어를 <b>中文(简体) 중국어 간체</b>로 선택</li>
-      </ol>
-      <div class="small">💡 통역 앱 왼쪽 메뉴에서 <b>'앱스 화면에 추가'</b>를 누르면 홈 화면 아이콘으로 바로 실행할 수 있어요<br>💡 출발 전 통역 설정에서 중국어 언어팩을 미리 받아 두기</div>
-      <div class="btnrow" style="margin-top:12px"><a class="btn primary" href="https://papago.naver.com/" data-app="papago" data-web="https://papago.naver.com/">🔤 파파고 대화 통역 열기</a><button type="button" class="btn" data-close>닫기</button></div>
-    </div>`;
-    ov.addEventListener("click", e=>{ if(e.target === ov || e.target.closest("[data-close]")) ov.remove(); });
-    document.body.appendChild(ov);
+  t.addEventListener("click", e=>{
+    e.preventDefault();
+    if(!/Android/i.test(navigator.userAgent||"")){ interpSheet(); return; }
+    const back = location.href.split("#")[0] + "#interp";
+    location.href = "intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.samsung.android.app.interpreter;S.browser_fallback_url=" + encodeURIComponent(back) + ";end";
   });
+  const chk = ()=>{ if(location.hash === "#interp"){ history.replaceState(null, "", location.pathname + location.search); if(!document.querySelector(".sheetbox")) interpSheet(); } };
+  chk(); window.addEventListener("hashchange", chk);
 })();
 
 initRestos();
