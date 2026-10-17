@@ -851,6 +851,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .rcard .rtop{flex-wrap:wrap}.rcard .rname{flex:1 1 8em;min-width:8em}.rcard .rper{margin-left:auto;text-align:right;white-space:normal}
 .stepn{display:inline-block;min-width:22px;height:22px;border-radius:50%;background:#1f5fd1;color:#fff;font:700 12px/22px system-ui,sans-serif;text-align:center;margin-right:4px}
 .stepul{margin:6px 0 0;padding-left:18px;font-size:13.5px;line-height:1.55}.stepul li{margin-bottom:3px}
+.ytbox{margin-top:16px}
+.ytrow{display:flex;gap:10px;align-items:flex-start;text-decoration:none;color:var(--fg);padding:8px 0;border-top:1px solid var(--line)}
+.ytth{position:relative;flex:0 0 120px;width:120px;height:68px;border-radius:8px;overflow:hidden;background:#222}
+.ytth img{width:100%;height:100%;object-fit:cover;display:block}.ytth em{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.8);color:#fff;font:600 11px/1.2 system-ui;padding:1px 4px;border-radius:4px;font-style:normal}
+.ytinfo b{display:block;font-size:13.5px;line-height:1.35}.ytinfo small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
 .rtips ul{margin:6px 0 0;padding-left:18px;font-size:13px;line-height:1.55}.rtips li{margin-bottom:4px}
 img.rphoto{cursor:zoom-in}
 .lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
@@ -1052,11 +1057,6 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
 
   <!-- INFO -->
   <section class="tab" id="tab-info" data-tab="info">
-    <details class="card fold" id="appTest" style="margin-bottom:12px">
-      <summary>📱 파파고 앱 바로가기 자동 찾기</summary>
-      <div class="small" style="margin:6px 0">버튼을 누르면 앱 여는 방법을 하나씩 시도해요. 돌아와서 <b>열렸어요 / 안 열렸어요</b>만 누르면, 열린 방법을 이 휴대폰이 기억해서 홈 화면 버튼이 앱으로 바로 열려요.</div>
-      <div class="finder" id="finder-papago"></div>
-    </details>
     <h2>항공 · 숙소 · 여행자</h2>
     <div class="card">
       <h3>항공</h3>
@@ -1069,7 +1069,6 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
     <div class="card" style="margin-top:12px">
       <h3>숙소</h3>
       <ul class="plain">
-        <li>예약 확인 완료: <b>Intercity Hotel Shanghai Nanjing Road Pedestrian Street The Bund</b> (인터시티 디럭스 2침대룸)</li>
         <li>주소: <b>No. 431 Fuzhou Road (푸저우루 431)</b> · 10/26~10/29 · 3박 · 787,773원</li>
         <li>10/26 공항 픽업: 13:25 · 상하이 푸동공항 → 숙소 (42,799원, 예약 성공)</li>
       </ul>
@@ -1907,6 +1906,7 @@ function initRestos(){
       h += `<div class="rslot">${label}</div>` + (note ? `<div class="rnote">${esc(note)}</div>` : "") + ex.map(add).join("") + bu.map(add).join("");
     });
   });
+  h += ytList("resto");
   h += `<div class="rcredit">💰 1만원 = 약 50위안 (1위안 ≈ ${CNY_KRW}원) · 가격은 대략치라 따종디엔핑 人均(1인 평균)으로 확인<br>대표 음식 사진: 위키미디어 공용(Wikimedia Commons) · 가게 실제 사진이 아닌 대표 메뉴 예시 · ${flat.filter(r=>r.img && r.cr).map(r=>esc(r.cr)).join(" / ")}</div>`;
   box.innerHTML = h;
   box.addEventListener("click", async e=>{
@@ -1923,6 +1923,7 @@ function initShops(){
     const list = SHOPS.filter(x=>x.day===d); if(!list.length) return;
     h += `<h3 class="rday">${esc(D[d])}</h3>` + list.map(x=>{ const r = Object.assign({shop:true}, x); flat.push(r); return restoCard(r, flat.length-1); }).join("");
   });
+  h += ytList("shop");
   h += `<div class="rcredit">가격은 대략치 · 1위안 ≈ ${CNY_KRW}원<br>사진: 위키미디어 공용(Wikimedia Commons) · 대표 상품·장소 예시 · ${flat.filter(r=>r.img && r.cr).map(r=>esc(r.cr)).join(" / ")}</div>`;
   box.innerHTML = h;
   box.addEventListener("click", async e=>{
@@ -2006,6 +2007,13 @@ renderFinders();
 const ARR_STEPS = [{"t": "한국에서 준비 (출발 전)", "emo": "📱", "sign": "", "d": ["알리페이에 외국 카드 연결 · 디디(滴滴出行) 결제 테스트", "eSIM 또는 로밍을 미리 켜기 (공항 와이파이 의존 X)", "숙소 주소를 복사해 두기 (아래 버튼)", "✋ 13:25 공항 픽업을 예약해 두었으니 디디는 픽업이 안 올 때를 위한 예비 방법"], "btn": "addr"}, {"t": "착륙 → 입국심사 (T2 2층)", "img": "201812 Immigration Inspection directory Sign at PVG.jpg", "cr": "MNXANL · CC BY-SA 4.0", "sign": "外国人", "d": ["비행기에서 내려 '入境 / Arrivals' 표지 따라 걷기", "입국심사는 외국인(外国人) 줄 · 여권과 입국카드 제출, 지문 등록", "아이들도 함께 줄 서서 한 명씩 심사"]}, {"t": "수하물 찾기", "img": "201611 Baggage Claim area of PVG T1.jpg", "cr": "MNXANL · CC BY-SA 4.0", "sign": "行李提取", "d": ["전광판에서 KE887 편명과 벨트 번호 확인", "짐 찾는 동안 디디는 아직 부르지 않기 (기사 대기시간이 짧음)"]}, {"t": "세관 통과 → 도착 로비 (2층)", "img": "20230720 Interior of Terminal 2 of Shanghai Pudong International Airport.jpg", "cr": "Windmemories · CC BY-SA 4.0", "sign": "无申报通道", "d": ["신고할 물건이 없으면 초록색 '无申报通道(신고 없음)' 통로", "도착 로비로 나오면 호객하는 '디디?' '택시?' 기사는 무시하고 지나가기"]}, {"t": "디디 부르기 (짐 찾은 뒤)", "emo": "🚕", "sign": "快车", "d": ["알리페이 → 滴滴出行(디디) 열기", "출발지: 浦东国际机场T2 · 앱이 정해 주는 승차 지점(上车点)을 그대로 선택 (예: T2 P2停车库 B2층)", "목적지: 숙소 주소 붙여넣기 → 快车(콰이처, 일반) 선택 → 호출", "배차되면 차량 번호판과 승차 지점 번호(기둥 번호)를 캡처해 두기"], "btn": "didi"}, {"t": "표지 따라 P2 주차장 지하 2층(B2)으로", "emo": "🅿️", "sign": "网约车上车点", "d": ["2층 출구에서 '网约车上车点(왕위에처 상처디엔 = 호출차 타는 곳)' 표지를 따라가기", "에스컬레이터나 엘리베이터로 P2 주차장 B2층 · 호출차 승차 구역 70곳 (2026년 10월 공항 안내 기준)", "앱에 나온 기둥 번호(예: D2-08, D4)를 찾아 기다리기 · 빨간 기둥에 번호가 적혀 있다는 후기", "참고: 1층 26번 문 밖은 일반 택시 승차장 (디디가 안 잡히면 대안)"]}, {"t": "차량 확인 → 탑승", "emo": "🚗", "sign": "请去这个地址", "d": ["앱의 번호판과 차량을 꼭 확인하고 타기", "기사에게 앱 화면이나 숙소 주소(중국어)를 보여 주기", "아이들 안전벨트 꼭 · 중국 택시·디디는 카시트가 없음"]}, {"t": "숙소까지 이동 (약 1시간~1시간 30분)", "img": "Crossroads of South-North Elevated Road and Yanan Elevated Road.jpg", "cr": "そらみみ · CC BY-SA 4.0", "sign": "", "d": ["요금 약 150위안 (약 30,000원) · 앱에서 자동 결제", "시내 고가도로(옌안루 고가 등)로 들어와 황푸구로 이동", "앱 안의 긴급 버튼(110 신고)이 있으니 안심"]}, {"t": "숙소 도착 · 짐 맡기기", "emo": "🏨", "sign": "城际上海外滩南京路步行街酒店", "d": ["푸저우루 431번지 · 체크인 전이면 짐만 맡기고 일정 시작 (14:30 전후)"]}];
 const ARR_LINKS = [["📝 블로그 후기", "https://m.search.naver.com/search.naver?where=m_blog&query=%ED%91%B8%EB%8F%99%EA%B3%B5%ED%95%AD%202%ED%84%B0%EB%AF%B8%EB%84%90%20%EB%94%94%EB%94%94%20%ED%83%80%EB%8A%94%EA%B3%B3"], ["▶️ 유튜브 영상", "https://m.youtube.com/results?search_query=%ED%91%B8%EB%8F%99%EA%B3%B5%ED%95%AD+%EB%94%94%EB%94%94+%ED%83%80%EB%8A%94%EB%B2%95"], ["📷 사진 보기", "https://m.search.naver.com/search.naver?where=image&query=%ED%91%B8%EB%8F%99%EA%B3%B5%ED%95%AD%20P2%20%EB%94%94%EB%94%94%20%EC%8A%B9%EC%B0%A8%EC%9E%A5"]];
 const ARR_REFS = [["푸동공항 → 시내 디디 픽업 위치·요금 (2025.12)", "https://trip.xn--o39an2bqdw74b8te7xy.com/shanghai-pudong-to-city-didi-taxi/"], ["트립닷컴 - 푸동공항 디디 타는 법 (2025.04)", "https://kr.trip.com/moments/detail/shanghai-2-130771034/"], ["소후 - 푸동공항 도착 후 교통 안내 (2026.10)", "https://www.sohu.com/a/1085240202_122014422"]];
+const YT = {"arr": [["NE0JqHrpaNE", "중국 여행의 첫걸음, 푸동공항에서 시내 이동 방법", "트립 가이드 (트립닷컴)", "2,344", "5개월 전", "4:04"], ["Og6CZYiR5Iw", "상해 푸동 공항에서 디디 택시 타는법, 그냥 이대로만 따라와 (필수 중국어 포함)", "나시엔 (Naxian)", "2,371", "7개월 전", "6:06"], ["fH3dgZ1iCoM", "상하이 푸동 공항 디디 타는곳 · 요금 · 알리페이", "리리쿡 riricook", "4,727", "1년 전", "1:10"], ["_aXoooId1Rg", "알아두면 유용한 디디 차량 종류 & 픽업 꿀팁", "웅웅 트립", "13,119", "1년 전", "8:01"], ["RvkG-4tqD5g", "중국 생활 16년차가 알려주는 2025 중국 여행 주의사항 9가지", "서원PD", "231,265", "1년 전", "23:28"]], "resto": [["ECOIHaz1IXo", "상하이 왜 이렇게 재밌어..? 추천 맛집투어 · 우캉맨션 · 딤섬 맛집", "다혜가다했다DAHYE (구독 16.5만)", "52,300", "2026.10.06", "36:55"], ["ZM8grXwgU2o", "먹다가 끝나는 상하이 브이로그 · 미슐랭 맛집 & 상하이 디즈니랜드", "돌돌하 (구독 18.6만)", "24,121", "2025.05.23", "16:22"], ["4tkbyIsHWiA", "상하이 맛집 길거리에서 맛평가하기 (남상만두)", "핫플탐방", "1,085", "2025.03.13", "1:44"], ["JAnpNskm53A", "(2025 상하이) 상해맛집 가가탕포 · 릴리안 베이커리", "캐나다 왕탱집밥", "330", "2025.05.23", "12:42"]], "shop": [["BLQG7DXd_Ug", "귀여움 중독자의 상하이 쇼핑 리스트 (상해 가기 전 제발 보고가요)", "김규림의 소비예찬 (구독 1.8만)", "8,423", "2025.06.08", "20:55"], ["nGd07ZJVgSk", "상하이 쇼핑리스트 56가지 리뷰 · 따바이투 · 미니소 · 블랜버니 · 디즈니", "맥시멀리스트우주", "5,894", "2026.01.25", "50:17"], ["oZjteB7bCBA", "한국에서 절대 못삼! 상하이 현지인들도 쟁이는 쇼핑리스트", "마이츄", "4,110", "2025.05.01", "16:16"]]};
+function ytList(key){
+  const L = YT[key] || []; if(!L.length) return "";
+  return `<div class="ytbox"><div class="rslot">▶️ 추천 유튜브 영상</div>`+L.map(([id,t,ch,v,d,len])=>
+    `<a class="ytrow" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener"><span class="ytth"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${id}/mqdefault.jpg" onerror="this.remove()"><em>${len}</em></span><span class="ytinfo"><b>${esc(t)}</b><small>${esc(ch)} · 조회 ${v}회 · ${d}</small></span></a>`).join("")+
+    `<div class="rcredit">조회수는 2026-10-17 기준 · 중국에서는 유튜브가 막혀 있어 출발 전 한국에서 보기</div></div>`;
+}
 function initArrival(){
   const box = $("#arrList"); if(!box) return;
   const ADDR = "上海市黄浦区福州路431号";
@@ -2020,6 +2028,7 @@ function initArrival(){
       (st.sign ? `<div class="rcn">${esc(st.sign)}</div>${pr(st.sign)}` : "")+`</div></div>`+
       `<ul class="stepul">${st.d.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${extra}</div>`;
   });
+  h += ytList("arr");
   h += `<div class="rcredit">참고한 글: ${ARR_REFS.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`).join(" · ")}<br>사진: 위키미디어 공용 · 위치 예시 사진 · ${ARR_STEPS.filter(x=>x.cr).map(x=>esc(x.cr)).join(" / ")}</div>`;
   box.innerHTML = h;
   const b = $("#arrAddr"); if(b) b.addEventListener("click", async ()=>flash(b, await copyText(ADDR), "숙소 주소 복사"));
