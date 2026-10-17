@@ -806,6 +806,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .dpin2{width:34px;height:34px;border-radius:50%;background:#ffc94a;border:3px solid #ffffff;color:#1b1400;font:800 15px/28px system-ui,sans-serif;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.5);cursor:pointer}
 .dpin2.hl{box-shadow:0 0 0 6px rgba(95,216,255,.7)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.gps-msg:empty{display:none}
 .cnlist{list-style:none;padding:0;margin:0}.cnlist li{border-bottom:1px solid var(--line);padding:10px 0}.cnko{font-size:13px;color:var(--muted)}.cnrow2{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px}.cnpr{font-size:13px;color:#1f5fd1;font-weight:600;margin:2px 0 6px;user-select:text;-webkit-user-select:text}
 .wxhead{display:flex;justify-content:space-between;align-items:center;gap:8px}.wxhead .btn,.wxfoot .btn{padding:6px 10px;font-size:13px}
 .wxgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0 8px}
@@ -909,14 +910,13 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <div class="row" style="align-items:center">
         <div class="grow">
           <h3>내 위치 (GPS)</h3>
-          <div class="muted small">휴대폰 위치를 지도에 표시하고, 근처 장소에 도착하면 퀘스트를 자동 완료합니다.</div>
         </div>
       </div>
       <div class="btnrow">
         <button class="btn primary" id="gpsBtn" type="button">📍 내 위치 켜기</button>
         <button class="btn" id="gpsStop" type="button" hidden>위치 끄기</button>
       </div>
-      <div class="gps-msg" id="gpsMsg">위치 기능은 이 페이지를 <b>HTML 파일로 저장해서 휴대폰 브라우저에서 열었을 때</b> 동작합니다. 웹 미리보기 화면에서는 위치 권한이 막힐 수 있습니다.</div>
+      <div class="gps-msg" id="gpsMsg"></div>
       <div id="gpsInfo" class="small" style="margin-top:8px"></div>
       <div class="btnrow" id="gpsLinks"></div>
     </div>
@@ -927,7 +927,6 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
         <a class="btn" href="alipays://platformapi/startapp?appId=20000056">알리페이 결제 코드</a>
         <a class="btn" href="https://intl.alipay.com/" target="_blank" rel="noopener">알리페이 홈 (웹)</a>
       </div>
-      <div class="muted small">앱이 설치되어 있으면 버튼으로 바로 열립니다. 앱 주소는 버전에 따라 바뀔 수 있으니 출발 전에 한 번 눌러 확인하세요. 웹 링크 화면이나 일부 브라우저에서는 앱이 안 열릴 수 있습니다.</div>
     </div>
       <details class="card fold" style="margin-bottom:12px">
       <summary>고덕지도 검색용 (중국어)</summary>
@@ -1361,20 +1360,20 @@ function onPos(pos){
   const g = wgs2gcj(userPos.lat,userPos.lng);
   $("#gpsInfo").innerHTML = `위치 확보 · 정확도 약 ${Math.round(userPos.acc)}m · 좌표(WGS-84) ${userPos.lat.toFixed(5)}, ${userPos.lng.toFixed(5)}` + (inMap(userPos.lat,userPos.lng)? "" : "<br><span style='color:var(--gold)'>현재 위치가 지도 범위 밖입니다. 아래 가오더 링크로 확인하세요.</span>");
   $("#gpsLinks").innerHTML = `<a class="btn gold" href="${amapLink(userPos.lat,userPos.lng,'내 위치')}" target="_blank" rel="noopener">가오더(Amap)에서 내 위치 열기</a>`;
-  setMsg("GPS 동작 중. 250m 안으로 들어가면 퀘스트가 자동 완료됩니다.");
+  setMsg("내 위치 표시 중");
   $("#gpsBtn").hidden = true; $("#gpsStop").hidden = false;
 }
 function onErr(err){
   const why = {1:"위치 권한이 거부되었습니다. 휴대폰 브라우저 설정에서 위치 허용을 켜 주세요.", 2:"위치 정보를 가져올 수 없습니다. GPS를 켜고 다시 시도하세요.", 3:"위치 찾기 시간이 초과되었습니다. 야외에서 다시 시도하세요."}[err.code] || "위치를 가져오지 못했습니다.";
-  setMsg(why + " 이 페이지가 웹 미리보기에서 열렸다면 HTML 파일로 저장해 휴대폰 브라우저에서 여세요.", true);
+  setMsg(why, true);
 }
 $("#gpsBtn").addEventListener("click", ()=>{
-  if(!("geolocation" in navigator)){ setMsg("이 환경에서는 위치 기능을 쓸 수 없습니다. HTML 파일로 저장해서 휴대폰 브라우저에서 열어 주세요.", true); return; }
+  if(!("geolocation" in navigator)){ setMsg("이 브라우저에서는 위치 기능을 쓸 수 없어요.", true); return; }
   try{
     gpsWatch = navigator.geolocation.watchPosition(onPos, onErr, {enableHighAccuracy:true, timeout:20000, maximumAge:5000});
     setMsg("위치를 찾는 중…");
   } catch(e){
-    setMsg("위치 기능을 시작하지 못했습니다. HTML 파일로 저장해 휴대폰 브라우저에서 열어 주세요.", true);
+    setMsg("위치 기능을 시작하지 못했어요.", true);
   }
 });
 $("#gpsStop").addEventListener("click", ()=>{
