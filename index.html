@@ -989,6 +989,29 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <div id="gpsInfo" class="small"></div>
       <div class="btnrow" id="gpsLinks"></div>
     </div>
+    <div class="card" id="nearCard" style="margin-bottom:12px">
+      <h3>🚻 내 주변 화장실 · 식당 (현재 위치 기준)</h3>
+      <div class="btnrow" style="margin-top:8px">
+        <button type="button" class="btn primary" data-near="厕所">🚻 화장실</button>
+        <button type="button" class="btn primary" data-near="美食">🍜 식당</button>
+        <button type="button" class="btn" data-near="便利店">🏪 편의점</button>
+        <button type="button" class="btn" data-near="咖啡">☕ 카페</button>
+      </div>
+      <div class="small muted" id="nearMsg" style="margin-top:6px">고덕지도 앱에서 가까운 순으로 열림</div>
+      <details style="margin-top:8px">
+        <summary class="small">화장실 찾을 때 쓰는 중국어 · 팁</summary>
+        <ul class="cnlist" style="margin-top:6px">
+          <li><div class="cnko">화장실 어디예요?</div><span class="cncn" style="font-size:16px">厕所在哪里？</span><div class="cnpr">처쑤오 짜이 나리?</div></li>
+          <li><div class="cnko">공중화장실 (표지판 · WC)</div><span class="cncn" style="font-size:16px">公共厕所</span><div class="cnpr">꽁꽁 처쑤오</div></li>
+          <li><div class="cnko">화장실 좀 써도 될까요? (가게·식당에서)</div><span class="cncn" style="font-size:16px">可以用一下洗手间吗？</span><div class="cnpr">커이 용 이샤 시셔우지엔 마?</div></li>
+        </ul>
+        <ul class="plain" style="margin-top:6px">
+          <li>휴지가 없는 화장실이 많아 <b>휴대용 휴지·물티슈</b> 필수</li>
+          <li>깨끗한 곳: 쇼핑몰 · 지하철역 · 호텔 로비 · 맥도날드·KFC·스타벅스</li>
+          <li>와이탄·예원·난징동루에는 공중화장실이 곳곳에 있음 · 고덕지도에 '公共厕所'로 표시</li>
+        </ul>
+      </details>
+    </div>
       <details class="card fold" id="arrFold" style="margin-bottom:12px">
       <summary>✈️ 푸동공항 → 숙소 디디 타는 법 (사진 · 단계별)</summary>
       <div id="arrList"></div>
@@ -1576,7 +1599,7 @@ function distText(p){
 const gpsMsg = $("#gpsMsg");
 function setMsg(t, bad){ gpsMsg.textContent = t; gpsMsg.classList.toggle("bad", !!bad); }
 function onPos(pos){
-  userPos = {lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy};
+  userPos = {lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy, t: Date.now()};
   const done = store.get("sh-quests", {});
   let changed = false;
   PLACES.forEach(p=>{ if(!done[p.id] && haversine(userPos.lat,userPos.lng,p.lat,p.lng) < 250){ done[p.id]=true; changed=true; } });
@@ -2034,6 +2057,25 @@ const RSLOT = {"海底捞火锅": [1, "저녁"], "南翔馒头店": [1, "간식"
 const RBUDGET = [{"day": 1, "slot": "저녁", "ko": "지샹 훈툰 (난징동루 근처)", "cn": "吉祥馄饨", "q": "吉祥馄饨 南京东路", "per": "¥15~30", "menu": "荠菜鲜肉馄饨 냉이고기 훈툰 · 鲜肉馄饨 고기 훈툰 · 小馄饨 작은 훈툰", "tip": "상하이 훈툰 체인 · 하이디라오 대신 가볍게 먹을 때 · 아이들 먹기 좋음", "nb": "상하이 길상훈툰", "img": "FOOD Wonton Soup.jpg", "emo": "🥟"}, {"day": 2, "slot": "점심", "ko": "편의점 도시락 싸가기", "cn": "便利店便当", "q": "全家便利店 福州路", "per": "¥15~30", "menu": "三明治 샌드위치 · 饭团 삼각김밥 · 便当 도시락 · 생수", "tip": "디즈니는 외부 음식 반입 가능 · 단, 데우는 음식·컵라면·두리안·취두부·유리병·술은 안 됨 · 공원 안 식당은 1인 60위안(약 12,000원) 이상이라 1만원 이하가 어려움", "nb": "상하이 디즈니 음식 반입", "emo": "🥪"}, {"day": 3, "slot": "점심", "ko": "란저우 라미엔 (우육면)", "cn": "兰州拉面", "q": "兰州拉面 人民广场", "per": "¥20~35", "menu": "牛肉拉面 소고기 수타면 · 刀削面 도삭면 · 炒饭 볶음밥", "tip": "어디에나 있는 저렴한 면집 · 쟈쟈탕바오 줄이 길면 대안 · 맵지 않게 '不要辣'", "nb": "상하이 란저우라면", "img": "Northern Chinese Lamb Noodle Soup in Peking Garden.jpg", "emo": "🍜"}, {"day": 3, "slot": "간식", "ko": "총바오후이 (파 전병말이)", "cn": "舌尖葱包烩", "q": "舌尖葱包烩 乌镇", "per": "¥10~20", "menu": "传统葱包烩 파 전병말이 · 芝士葱包烩 치즈 전병말이", "tip": "우전 시짜 거리 465번지 · 걸으면서 먹는 간식", "nb": "우전 총바오후이", "emo": "🥞"}, {"day": 4, "slot": "점심", "ko": "푸동공항 T2 KFC·맥도날드", "cn": "肯德基", "q": "肯德基 浦东机场T2", "per": "¥30~45", "menu": "汉堡套餐 햄버거 세트 · 炸鸡 치킨", "tip": "공항은 시내보다 비쌈 · 출국 수속 후 시간 남으면 · 매장 위치는 공항에서 확인", "nb": "푸동공항 T2 식당", "emo": "🍔"}];
 const BREAKFAST = {"ko": "인터시티 호텔 조식 뷔페", "cn": "城际上海外滩南京路步行街酒店", "hours": "평일 06:30~10:00 · 주말 06:30~11:00 (여행 기간은 모두 평일)", "price": "¥78", "kids": "만 12세 이하 무료 (13~17세는 성인 요금)", "menu": "중식: 葱油拌面 파기름 비빔면 · 点心 딤섬 · 즉석 국수 / 양식: 계란 요리 · 베이컨 · 소시지 · 토스트 · 햄 / 과일 · 커피 · 오렌지주스", "review": "트립닷컴 호텔 평점 9.6/10 (후기 3,748개) · 조식 후기는 '맛있다'와 '음식이 식어 있다·토스터가 느리다'로 엇갈림", "tip": "예약에 조식 포함인지 확인 · 미포함이면 현장 결제 · 8시 전후가 가장 붐빔", "trip": "https://www.trip.com/hotels/shanghai-hotel-detail-131743584/intercity-hotel-shanghai-nanjing-road-pedestrian-street-the-bund/", "nb": "인터시티 호텔 상하이 난징동루 조식"};
 const CNY_KRW = 199;   // 1위안 = 약 199원 (2026-10-16 위안-원 직거래 마감 199.14원)
+/* ---------- 내 주변 화장실 · 식당 (고덕지도 주변 검색) ---------- */
+function nearGo(kw, b){
+  const msg = $("#nearMsg");
+  const open = (lat, lng, acc) => {
+    const g = wgs2gcj(lat, lng);
+    const web = "https://uri.amap.com/search?keyword="+encodeURIComponent(kw)+"&center="+g.lng.toFixed(6)+","+g.lat.toFixed(6)+"&coordinate=gaode&view=map&src=shanghai-trip&callnative=1";
+    const path = "arroundpoi?sourceApplication=shanghai-trip&keywords="+encodeURIComponent(kw)+"&lat="+lat.toFixed(6)+"&lon="+lng.toFixed(6)+"&dev=1";
+    if(msg) msg.textContent = "현재 위치 확인 (정확도 ±"+Math.round(acc||0)+"m) → 고덕지도 여는 중…";
+    if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||"")) openApp("amapapp", web, "", path);
+    else window.open(web, "_blank", "noopener");
+  };
+  if(userPos && Date.now() - (userPos.t||0) < 60000){ open(userPos.lat, userPos.lng, userPos.acc); return; }
+  if(!navigator.geolocation){ if(msg) msg.textContent = "이 휴대폰에서 위치를 쓸 수 없습니다"; return; }
+  if(msg) msg.textContent = "현재 위치 확인 중…";
+  navigator.geolocation.getCurrentPosition(p => open(p.coords.latitude, p.coords.longitude, p.coords.accuracy),
+    e => { if(msg) msg.textContent = e.code === 1 ? "위치 권한을 허용해 주세요 (브라우저 설정 → 위치)" : "위치를 못 찾았습니다 · 잠시 후 다시 눌러 주세요"; },
+    {enableHighAccuracy:true, timeout:15000, maximumAge:30000});
+}
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("[data-near]"); if(b) nearGo(b.dataset.near, b); });
 /* ---------- 돈 표기에 원화 자동 병기 (위안·달러 → 약 ○원) ---------- */
 const USD_KRW = 1334;   // 1달러 ≈ 1,334원 (2026-10-19 기준)
 function fmtWon(n){ return n >= 100000 ? Math.round(n/10000).toLocaleString("ko-KR")+"만" : (Math.round(n/100)*100).toLocaleString("ko-KR"); }
