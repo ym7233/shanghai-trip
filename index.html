@@ -802,6 +802,7 @@ img.rphoto.dxph{flex:0 0 72px;width:72px;height:54px;border-radius:8px}
 .calls{list-style:none;margin:6px 0 0;padding:0}
 .calls li{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line)}
 .calls li:last-child{border-bottom:0}
+.calls .btn{flex:0 0 auto;white-space:nowrap}
 .calls .cn{min-width:0;display:flex;flex-direction:column;gap:2px}
 .cnum{font-variant-numeric:tabular-nums;font-weight:700;color:var(--fg)}
 .warnline{color:var(--gold);font-size:12.5px}
@@ -1137,9 +1138,9 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
         <tbody>
           <tr><td><b>해외 상해 의료비 (실비)</b><div class="small muted">해외 병원에서 다쳐서 낸 치료비 실제 금액 · 침·추나는 1천 달러 한도</div></td><td class="num">5,000만원</td><td class="small">4명</td></tr>
           <tr><td><b>해외 질병 의료비 (실비)</b><div class="small muted">해외 병원에서 아파서 낸 치료비 실제 금액</div></td><td class="num">5,000만원</td><td class="small">4명</td></tr>
-          <tr><td><b>상해 사망</b><div class="small muted">여행 중 사고로 1년 안에 사망</div></td><td class="num">3억원</td><td class="small">본인만</td></tr>
+          <tr><td><b>상해 사망</b><div class="small muted">여행 중 사고로 1년 안에 사망</div></td><td class="num">3억원</td><td class="small" style="white-space:nowrap">본인만</td></tr>
           <tr><td><b>상해 후유장해</b><div class="small muted">장해 정도(지급률)만큼 지급</div></td><td class="num">3억원</td><td class="small">4명</td></tr>
-          <tr><td><b>질병 사망 · 80% 고도후유장해</b></td><td class="num">1,000만원</td><td class="small">본인만</td></tr>
+          <tr><td><b>질병 사망 · 80% 고도후유장해</b></td><td class="num">1,000만원</td><td class="small" style="white-space:nowrap">본인만</td></tr>
           <tr><td><b>휴대품 손해 (분실 제외)</b><div class="small muted">도난·파손만 · 물건 1개당 20만원 · 자기부담 1만원</div></td><td class="num">100만원</td><td class="small">4명</td></tr>
           <tr><td><b>일괄배상 (남에게 피해)</b><div class="small muted">남의 물건·몸에 피해 · 호텔 객실·비품 파손 포함 · 자기부담 1만원</div></td><td class="num">3,000만원</td><td class="small">4명</td></tr>
           <tr><td><b>항공기 · 수하물 지연</b><div class="small muted">4시간 이상 지연·결항·초과예약 탑승거부 → 숙박·식사·간식 실비 / 짐이 6시간 안에 안 오면 옷·필수품 실비</div></td><td class="num">20만원</td><td class="small">4명</td></tr>
