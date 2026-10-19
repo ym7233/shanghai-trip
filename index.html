@@ -1012,7 +1012,7 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
 
   <!-- DISNEY -->
   <section class="tab" id="tab-disney" data-tab="disney">
-    <h2>디즈니랜드 상세 지도 · 10/27</h2>
+    <div class="row" style="justify-content:space-between;align-items:center;gap:8px"><h2 style="margin:0">디즈니랜드 상세 지도 · 10/27</h2><a class="btn primary" href="https://www.shanghaidisneyresort.com/" data-app="disney" data-web="https://www.shanghaidisneyresort.com/" style="white-space:nowrap">🏰 디즈니 앱</a></div>
     <div class="mapbox" id="disneyMap"></div>
         <details class="card dis-fold" style="margin-top:12px;padding:8px">
       <summary>디즈니랜드 가는 법</summary>
@@ -1027,6 +1027,7 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <ul class="cnlist" id="disCn" style="margin-top:8px"></ul>
     </details>
     <div id="dInfo" class="card card-info" style="display:none"></div>
+    <div class="card" id="disLive" style="margin-bottom:12px"></div>
     <h2>놀이기구 · 공연 순서</h2>
     <div class="card"><ul class="tl dl" id="dList"></ul></div>
     <h2>디즈니 팁</h2>
@@ -1036,11 +1037,37 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
         <li><b>DPA(디즈니 패스권)</b>: 로어링 래피드, 피터팬, TRON은 패스권 시간대로 예약. 그 외 기구는 일반 줄.</li>
         <li><b>세븐 드워프 마인 트레인</b>: 줄이 길면 과감히 뒤로 미루기 (엑셀 메모 그대로).</li>
         <li><b>퍼레이드 15:45</b>: 14:30 전에 성 앞 자리 잡기. 약 14분.</li>
-        <li><b>야간 공연 ILLUMINATE</b>: 엑셀에 "(8:30)"으로만 적혀 있어 <b>20:30으로 가정</b>했습니다. 공식 앱에서 확인.</li>
+        <li><b>야간 공연 ILLUMINATE</b>: 엑셀에 "(8:30)"으로만 적혀 있어 <b>20:30으로 가정</b>했습니다. 당일 위 '실시간' 칸에 공연 시간이 뜨면 그 시간으로.</li>
+        <li><b>10/27 운영 시간</b>: 08:30~21:30 (현재 공지 기준)</li>
         <li><b>파크 간식</b>: 가격이 높습니다. 간식은 입구 전 준비 추천.</li>
         <li><b>복장</b>: 아침·밤은 쌀쌀할 수 있으니 얇은 겉옷 필수.</li>
       </ul>
     </div>
+    <details class="card fold" style="margin-top:12px">
+      <summary>⭐ 한눈에 요약</summary>
+      <ul class="plain" style="margin-top:8px">
+        <li><b>준비물</b>: 여권 필수 (입장권 예약한 여권) · 뚜껑 안 딴 물 · 가벼운 간식 · 겉옷</li>
+        <li><b>반입 금지</b>: 삼각대 · 셀카봉 · 짐벌 · 드론 (미니 삼각대도 걸리면 불가) · 돗자리·캠핑의자</li>
+        <li><b>디디</b>: 목적지 '<b>美利亚上海帕克赛德酒店</b> (Meliá Shanghai Parkside)' → 호텔 입구 말고 대로변 하차 → 걸어서 10분</li>
+        <li><b>입장권</b>: 트립닷컴이 가장 저렴 · 얼리버드 할인 활용</li>
+        <li><b>얼리 파크 패스</b>: 개장 1시간 전 입장 · 10일 전부터 디즈니 앱에서 구매 · 매진이면 한국 시간 새벽 1시에 취소표가 풀림</li>
+        <li><b>주토피아 패스</b>: 입장 직후 디즈니 앱에서 당일 구매 → 대기 120분이 10분으로</li>
+        <li><b>입장 QR</b>: 캡처 말고 디즈니 앱 화면 그대로 (30초마다 새로 바뀜)</li>
+      </ul>
+    </details>
+    <details class="card fold" style="margin-top:12px">
+      <summary>🚶 입장 동선</summary>
+      <ol style="margin:8px 0 0;padding-left:20px;line-height:1.6">
+        <li><b>얼리 파크 패스 대기 구역</b> — 얼리 패스 있는 사람만 · 일찍 온 순서로 줄<div><span class="cncn" style="font-size:15px">早享卡</span><div class="cnpr">자오샹카</div></div></li>
+        <li><b>얼리 패스 QR 확인</b> — 캡처 말고 디즈니 앱에서 30초마다 바뀌는 QR 보여주기</li>
+        <li><b>보안 검색 (가방 검사)</b> — 반입 금지품은 미리 빼 두기<div><span class="cncn" style="font-size:15px">安检区</span><div class="cnpr">안지엔 취</div></div></li>
+        <li><b>매표·검표 (여권 확인)</b> — 양쪽 모두 줄 설 수 있으니 <b>짧은 쪽</b>으로<div><span class="cncn" style="font-size:15px">取票验票区</span><div class="cnpr">취퍄오 옌퍄오 취</div></div></li>
+      </ol>
+      <ul class="plain" style="margin-top:8px">
+        <li>얼리 파크 패스가 있으면 일반 입장 줄이 아니라 <b>②번 입구</b>로 · 길을 모르겠으면 직원에게 "얼리 패스"라고만 말해도 안내해 줍니다.</li>
+        <li>얼리 패스가 없으면 ③ 보안 검색 → ④ 검표 순서로 입장.</li>
+      </ul>
+    </details>
   </section>
 
   <!-- CHECKLIST -->
@@ -1401,7 +1428,7 @@ function show(k, sc){
   nav.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected", String(b.dataset.go===k)));
   window.scrollTo({top:0});
   if(sc){ const el = document.querySelector(sc); if(el) setTimeout(()=>el.scrollIntoView({behavior:"smooth", block:"start"}), 60); }
-  if(k==="disney"){ initDisney(); setTimeout(fitDisney, 60); }
+  if(k==="disney"){ initDisney(); setTimeout(fitDisney, 60); loadDisLive(false); }
   if(k==="map"){ initAmap(); refreshAmap(false); if(amap) setTimeout(()=>amap.invalidateSize(), 50); }
 }
 nav.addEventListener("click", e=>{ const b=e.target.closest("button[data-go]"); if(b) show(b.dataset.go); });
@@ -1812,7 +1839,7 @@ function flash(b, ok, label){
   b.textContent = ok ? "복사됨 ✓" : "길게 눌러 복사";
   setTimeout(()=>{ b.textContent = label || old; }, 1500);
 }
-const PRON = {"迪士尼停车场上下客区": "디스니 팅처창 상샤커취", "生态园路上下客区": "셩타이위엔루 상샤커취", "请去这个地址": "칭 취 쩌거 디즈", "外国人": "와이궈런", "行李提取": "싱리 티취", "无申报通道": "우 션빠오 통따오", "快车": "콰이처", "网约车上车点": "왕위에처 상처디엔", "上海第一食品商店": "샹하이 디이 스핀 샹띠엔", "名创优品": "밍촹 요우핀", "豫园商城": "위위엔 샹청", "迪士尼小镇": "디스니 샤오쩐", "国际饭店西饼屋": "궈지 판띠엔 시빙우", "盒马鲜生": "허마 시엔셩", "乌镇西栅": "우전 시짜", "浦东机场免税店": "푸똥 지창 미엔수이띠엔", "便宜一点": "피엔이 이디엔", "城际上海外滩南京路步行街酒店": "청지 샹하이 와이탄 난징루 부싱지에 지우띠엔", "吉祥馄饨": "지샹 훈툰", "全家便利店": "취엔쟈 삐엔리띠엔", "便利店便当": "삐엔리띠엔 삐엔땅", "兰州拉面": "란저우 라미엔", "舌尖葱包烩": "셔지엔 총빠오후이", "肯德基": "컨더지", "佳家汤包": "쟈쟈 탕바오", "小杨生煎": "샤오양 셩지엔", "上海姥姥家常饭馆": "샹하이 라오라오 쟈창 판관", "海底捞火锅": "하이디라오 훠꿔", "外婆家": "와이포쟈", "南翔馒头店": "난샹 만터우 띠엔", "绿波廊": "뤼보랑", "鼎泰丰": "딩타이펑", "老吉士": "라오지스", "酷矿gelato": "쿠쾅 젤라또", "皇家宴会厅": "황쟈 옌후이팅", "老藤树食栈": "라오텅수 스잔", "烤火鸡腿": "카오 훠지퉤이", "书生羊肉面": "슈셩 양러우미엔", "吴妈馄饨": "우마 훈툰", "茅老太臭豆腐": "마오라오타이 처우떠우푸", "不要辣": "부야오 라", "不要香菜": "부야오 샹차이", "请给我儿童椅": "칭 게이 워 얼퉁이", "请去这个地址：上海市黄浦区福州路431号": "칭 취 쩌거 디즈: 샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "上海浦东国际机场": "샹하이 푸똥 꿔지 지창", "上海市黄浦区福州路431号": "샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "南京东路步行街": "난징 똥루 뿌싱지에", "海底捞火锅 南京东路": "하이디라오 훠꿔 난징 똥루", "豫园": "위위엔", "城隍庙": "청황먀오", "大白兔奶糖": "따바이투 나이탕", "外滩": "와이탄", "上海外滩英迪格酒店": "샹하이 와이탄 잉디거 지우띠엔", "十六铺码头": "스리우푸 마터우", "上海迪士尼度假区": "샹하이 디스니 뚜지아취", "新天地": "신티엔띠", "大韩民国临时政府旧址": "따한 민구어 린스 정푸 지우즈", "田子坊": "티엔쯔팡", "人民广场": "런민 광창", "乌镇": "우전", "武康大楼": "우캉 따러우", "武康路": "우캉 루", "上海迪士尼乐园": "샹하이 디스니 러위엔", "迪士尼站": "디스니 짠", "请在这里停车": "칭 짜이 쩌리 팅처", "多少钱？": "뚜어샤오 치엔", "多少钱": "뚜어샤오 치엔", "请给我开发票": "칭 게이 워 카이 파피아오", "洗手间在哪里？": "시서우지엔 짜이 나리", "洗手间在哪里": "시서우지엔 짜이 나리", "请去上海迪士尼乐园": "칭 취 샹하이 디스니 러위엔", "出租车": "추주처", "滴滴出行": "디디 추싱"};
+const PRON = {"美利亚上海帕克赛德酒店": "메이리야 샹하이 파커싸이더 지우띠엔", "早享卡": "자오샹카", "安检区": "안지엔 취", "取票验票区": "취퍄오 옌퍄오 취", "迪士尼停车场上下客区": "디스니 팅처창 상샤커취", "生态园路上下客区": "셩타이위엔루 상샤커취", "请去这个地址": "칭 취 쩌거 디즈", "外国人": "와이궈런", "行李提取": "싱리 티취", "无申报通道": "우 션빠오 통따오", "快车": "콰이처", "网约车上车点": "왕위에처 상처디엔", "上海第一食品商店": "샹하이 디이 스핀 샹띠엔", "名创优品": "밍촹 요우핀", "豫园商城": "위위엔 샹청", "迪士尼小镇": "디스니 샤오쩐", "国际饭店西饼屋": "궈지 판띠엔 시빙우", "盒马鲜生": "허마 시엔셩", "乌镇西栅": "우전 시짜", "浦东机场免税店": "푸똥 지창 미엔수이띠엔", "便宜一点": "피엔이 이디엔", "城际上海外滩南京路步行街酒店": "청지 샹하이 와이탄 난징루 부싱지에 지우띠엔", "吉祥馄饨": "지샹 훈툰", "全家便利店": "취엔쟈 삐엔리띠엔", "便利店便当": "삐엔리띠엔 삐엔땅", "兰州拉面": "란저우 라미엔", "舌尖葱包烩": "셔지엔 총빠오후이", "肯德基": "컨더지", "佳家汤包": "쟈쟈 탕바오", "小杨生煎": "샤오양 셩지엔", "上海姥姥家常饭馆": "샹하이 라오라오 쟈창 판관", "海底捞火锅": "하이디라오 훠꿔", "外婆家": "와이포쟈", "南翔馒头店": "난샹 만터우 띠엔", "绿波廊": "뤼보랑", "鼎泰丰": "딩타이펑", "老吉士": "라오지스", "酷矿gelato": "쿠쾅 젤라또", "皇家宴会厅": "황쟈 옌후이팅", "老藤树食栈": "라오텅수 스잔", "烤火鸡腿": "카오 훠지퉤이", "书生羊肉面": "슈셩 양러우미엔", "吴妈馄饨": "우마 훈툰", "茅老太臭豆腐": "마오라오타이 처우떠우푸", "不要辣": "부야오 라", "不要香菜": "부야오 샹차이", "请给我儿童椅": "칭 게이 워 얼퉁이", "请去这个地址：上海市黄浦区福州路431号": "칭 취 쩌거 디즈: 샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "上海浦东国际机场": "샹하이 푸똥 꿔지 지창", "上海市黄浦区福州路431号": "샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "南京东路步行街": "난징 똥루 뿌싱지에", "海底捞火锅 南京东路": "하이디라오 훠꿔 난징 똥루", "豫园": "위위엔", "城隍庙": "청황먀오", "大白兔奶糖": "따바이투 나이탕", "外滩": "와이탄", "上海外滩英迪格酒店": "샹하이 와이탄 잉디거 지우띠엔", "十六铺码头": "스리우푸 마터우", "上海迪士尼度假区": "샹하이 디스니 뚜지아취", "新天地": "신티엔띠", "大韩民国临时政府旧址": "따한 민구어 린스 정푸 지우즈", "田子坊": "티엔쯔팡", "人民广场": "런민 광창", "乌镇": "우전", "武康大楼": "우캉 따러우", "武康路": "우캉 루", "上海迪士尼乐园": "샹하이 디스니 러위엔", "迪士尼站": "디스니 짠", "请在这里停车": "칭 짜이 쩌리 팅처", "多少钱？": "뚜어샤오 치엔", "多少钱": "뚜어샤오 치엔", "请给我开发票": "칭 게이 워 카이 파피아오", "洗手间在哪里？": "시서우지엔 짜이 나리", "洗手间在哪里": "시서우지엔 짜이 나리", "请去上海迪士尼乐园": "칭 취 샹하이 디스니 러위엔", "出租车": "추주처", "滴滴出行": "디디 추싱"};
 function pr(c){ return PRON[c] ? '<div class="cnpr">'+esc(PRON[c])+'</div>' : ''; }
 function initCn(){
   const box = $("#cnList"); if(!box) return;
@@ -1833,7 +1860,7 @@ function initCn(){
   });
 }
 
-const DIS_KEY = [{"ko": "디디 목적지", "cn": "上海迪士尼乐园", "note": "디디 앱 목적지에 입력", "nav": "car"}, {"ko": "지하철역", "cn": "迪士尼站", "note": "11호선 하차", "nav": "bus"}, {"ko": "디디 하차", "cn": "", "note": "주차장 쪽 공식 하차 구역 (중국어 표기 없음)", "nav": ""}, {"ko": "귀가 디디 승차", "cn": "滴滴出行", "note": "A·B·C 승차 구역에서 호출", "nav": ""}, {"ko": "일반 택시", "cn": "出租车", "note": "공식 택시 승차장", "nav": ""}];
+const DIS_KEY = [{"ko": "디디 목적지 (추천)", "cn": "美利亚上海帕克赛德酒店", "note": "Meliá Shanghai Parkside · 호텔 입구까지 들어가지 말고 대로변(申迪西路 · 션디 시루)에서 하차 → 입구까지 걸어서 약 10분", "nav": "car"}, {"ko": "디디 목적지 (기본)", "cn": "上海迪士尼乐园", "note": "앱이 정해 주는 공식 하차 구역에서 내림", "nav": "car"}, {"ko": "지하철역", "cn": "迪士尼站", "note": "11호선 하차", "nav": "bus"}, {"ko": "디디 하차", "cn": "", "note": "주차장 쪽 공식 하차 구역 (중국어 표기 없음)", "nav": ""}, {"ko": "귀가 디디 승차", "cn": "滴滴出行", "note": "A·B·C 승차 구역에서 호출", "nav": ""}, {"ko": "일반 택시", "cn": "出租车", "note": "공식 택시 승차장", "nav": ""}];
 
 // 디즈니 공원 중심 (WGS-84) → 고덕 길찾기 링크
 const DIS_CENTER = [31.1434, 121.6578];
@@ -1962,7 +1989,8 @@ function appHref(app, web, path){
     tmap:{pkg:"com.skt.tmap.ku", scheme:"tmap", ios:"tmap://"},
     gmaps:{pkg:"com.google.android.apps.maps", scheme:"https", ios:"comgooglemaps://"},
     amapapp:{pkg:"com.autonavi.minimap", scheme:"androidamap", ios:"iosamap://"},
-    dianping:{pkg:"", scheme:"dianping", ios:"dianping://"}
+    dianping:{pkg:"", scheme:"dianping", ios:"dianping://"},
+    disney:{pkg:"com.disney.shanghaidisneyland_goo", scheme:"https", host:"www.shanghaidisneyresort.com/", ios:"", store:"https://play.google.com/store/apps/details?id=com.disney.shanghaidisneyland_goo"}
   }[app];
   if(!m) return null;
   if(android) return "intent://"+(path||m.host||"")+"#Intent;scheme="+m.scheme+(m.pkg ? ";package="+m.pkg : "")+";S.browser_fallback_url="+encodeURIComponent(m.store||web)+";end";
@@ -2183,19 +2211,19 @@ function initArrival(){
 }
 initArrival();
 
-const DR_STEPS = [{"t": "전날 밤 준비 (10/26)", "emo": "🌙", "sign": "上海迪士尼乐园", "d": ["편의점에서 아침거리 사 두기 (호텔 조식은 06:30 시작이라 못 먹음)", "알리페이 → 디디에서 목적지 '上海迪士尼乐园' 미리 검색해 보기", "디즈니 입장권 QR · 예약할 때 쓴 여권 챙기기 (입장 때 확인)"], "btn": "copy"}, {"t": "06:05 호텔 앞에서 디디 호출", "emo": "🚕", "sign": "快车", "d": ["출발지: 호텔(福州路431号) · 앱이 정해 주는 승차 지점 확인", "목적지: 上海迪士尼乐园 · 하차 지점은 앱이 추천하는 '迪士尼停车场上下客区(디즈니 주차장 상하차 구역)' 선택", "차종: 快车(콰이처) · 4인 가족 탑승 가능 · 아이 카시트 없음"], "btn": "didi"}, {"t": "06:15 출발 → 디즈니까지 약 40분~1시간", "img": "Crossroads of South-North Elevated Road and Yanan Elevated Road.jpg", "cr": "そらみみ · CC BY-SA 4.0", "sign": "", "d": ["요금 약 100~150위안 (약 2~3만원) · 앱에서 자동 결제", "이른 아침이라 막힘이 적지만 출근 시간대에 걸리면 더 걸림", "차 안에서 입장권 QR 화면 미리 열어 두기"]}, {"t": "하차 → 걸어서 입구까지 약 10분", "img": "Shanghai Disneyland Entrance.jpg", "cr": "Phlizz · CC BY-SA 4.0", "sign": "迪士尼停车场上下客区", "d": ["2025년 10월부터 호출차는 정해진 상하차 구역에서만 타고 내림 (주차장 상하차 구역 A·B·C, 생태원로 상하차 구역)", "'上海迪士尼乐园 / Shanghai Disneyland' 표지 따라 입구로", "07:10 전후 도착하면 여유 있음 (일정표 08:00 도착 목표)"]}, {"t": "보안 검색 → 입장 줄", "img": "Shanghai Disneyland Park Main Entry.jpg", "cr": "Baycrest · CC BY-SA 2.5", "sign": "", "d": ["가방 검사 + 입장권 QR + 여권 확인 · 15~30분 걸릴 수 있음", "입장 후 바로 주토피아로 (오픈런)"]}, {"t": "22:00 귀가 · 디디 다시 타기", "img": "Enchanted Storybook Castle of Shanghai Disneyland.jpg", "cr": "Fayhoo · CC BY-SA 3.0", "sign": "迪士尼停车场上下客区", "d": ["야간 쇼가 끝나면 수만 명이 한꺼번에 나와 디디 대기가 길어짐 → 출구 나가기 직전에 앱으로 미리 호출", "출구에서 오른쪽 → 스타벅스 지나 왼쪽 길 → 육교 올라갔다 에스컬레이터로 내려가면 왼쪽이 '디즈니 주차장 상하차 구역' (A·B·C 어디서나 탑승) · 약 10분", "또는 출구에서 왼쪽으로 약 10분 '生态园路上下客区(생태원로 상하차 구역)'", "일반 택시는 서쪽 버스 환승센터 D통로 택시 승차장"]}, {"t": "대안: 지하철 11호선 디즈니역", "img": "Exit 1 of Disney Resort Station in Shanghai 2024.jpg", "cr": "Kmchang28 · CC BY-SA 4.0", "sign": "迪士尼站", "d": ["디디가 너무 안 잡히면 지하철 11호선 迪士尼站(디스니 짠) · 입구에서 걸어서 약 10분", "막차는 22:30 전후 (당일 확인) · 시내까지 약 1시간, 1회 환승"]}];
+const DR_STEPS = [{"t": "전날 밤 준비 (10/26)", "emo": "🌙", "sign": "美利亚上海帕克赛德酒店", "d": ["편의점에서 아침거리 사 두기 (호텔 조식은 06:30 시작이라 못 먹음)", "알리페이 → 디디에서 목적지 '美利亚上海帕克赛德酒店(Meliá Shanghai Parkside)' 미리 검색해 보기", "디즈니 입장권 QR · 예약할 때 쓴 여권 챙기기 (입장 때 확인)"], "btn": "copy"}, {"t": "06:05 호텔 앞에서 디디 호출", "emo": "🚕", "sign": "快车", "d": ["출발지: 호텔(福州路431号) · 앱이 정해 주는 승차 지점 확인", "목적지: '美利亚上海帕克赛德酒店' (Meliá Shanghai Parkside · 디즈니 바로 옆 호텔) → 호텔 입구까지 들어가지 말고 대로변(申迪西路 션디 시루 · Shendi West Road)에서 내리기 · 입구까지 걸어서 약 10분", "Meliá가 안 되면 목적지 '上海迪士尼乐园' → 앱이 추천하는 '迪士尼停车场上下客区(디즈니 주차장 상하차 구역)'", "차종: 快车(콰이처) · 4인 가족 탑승 가능 · 아이 카시트 없음"], "btn": "didi"}, {"t": "06:15 출발 → 디즈니까지 약 40분~1시간", "img": "Crossroads of South-North Elevated Road and Yanan Elevated Road.jpg", "cr": "そらみみ · CC BY-SA 4.0", "sign": "", "d": ["요금 약 100~150위안 (약 2~3만원) · 앱에서 자동 결제", "이른 아침이라 막힘이 적지만 출근 시간대에 걸리면 더 걸림", "차 안에서 입장권 QR 화면 미리 열어 두기"]}, {"t": "하차 → 걸어서 입구까지 약 10분", "img": "Shanghai Disneyland Entrance.jpg", "cr": "Phlizz · CC BY-SA 4.0", "sign": "迪士尼停车场上下客区", "d": ["Meliá 앞 대로변에서 내렸다면 디즈니 입구 표지를 따라 약 10분", "2025년 10월부터 호출차는 정해진 상하차 구역에서만 타고 내림 (주차장 상하차 구역 A·B·C, 생태원로 상하차 구역)", "'上海迪士尼乐园 / Shanghai Disneyland' 표지 따라 입구로", "07:10 전후 도착하면 여유 있음 (일정표 08:00 도착 목표)"]}, {"t": "보안 검색 → 입장 줄", "img": "Shanghai Disneyland Park Main Entry.jpg", "cr": "Baycrest · CC BY-SA 2.5", "sign": "", "d": ["얼리 파크 패스가 있으면 일반 줄이 아니라 '얼리 패스' 전용 입구로 (아래 '입장 동선' 참고)", "가방 검사 → 매표·검표에서 여권 확인 · 15~30분 걸릴 수 있음", "QR은 캡처 말고 디즈니 앱 화면으로 (30초마다 바뀜)"]}, {"t": "22:00 귀가 · 디디 다시 타기", "img": "Enchanted Storybook Castle of Shanghai Disneyland.jpg", "cr": "Fayhoo · CC BY-SA 3.0", "sign": "迪士尼停车场上下客区", "d": ["야간 쇼가 끝나면 수만 명이 한꺼번에 나와 디디 대기가 길어짐 → 출구 나가기 직전에 앱으로 미리 호출", "출구에서 오른쪽 → 스타벅스 지나 왼쪽 길 → 육교 올라갔다 에스컬레이터로 내려가면 왼쪽이 '디즈니 주차장 상하차 구역' (A·B·C 어디서나 탑승) · 약 10분", "또는 출구에서 왼쪽으로 약 10분 '生态园路上下客区(생태원로 상하차 구역)'", "일반 택시는 서쪽 버스 환승센터 D통로 택시 승차장"]}, {"t": "대안: 지하철 11호선 디즈니역", "img": "Exit 1 of Disney Resort Station in Shanghai 2024.jpg", "cr": "Kmchang28 · CC BY-SA 4.0", "sign": "迪士尼站", "d": ["디디가 너무 안 잡히면 지하철 11호선 迪士尼站(디스니 짠) · 입구에서 걸어서 약 10분", "막차는 22:30 전후 (당일 확인) · 시내까지 약 1시간, 1회 환승"]}];
 const DR_LINKS = [["📝 블로그 후기", "https://m.search.naver.com/search.naver?where=m_blog&query=%EC%83%81%ED%95%98%EC%9D%B4%20%EB%94%94%EC%A6%88%EB%8B%88%20%EB%94%94%EB%94%94%20%ED%83%9D%EC%8B%9C%20%ED%95%98%EC%B0%A8"], ["📷 사진 보기", "https://m.search.naver.com/search.naver?where=image&query=%EC%83%81%ED%95%98%EC%9D%B4%20%EB%94%94%EC%A6%88%EB%8B%88%20%EB%94%94%EB%94%94%20%EC%8A%B9%EC%B0%A8%EC%9E%A5"]];
 const DR_REFS = [["광명망 - 상하이 디즈니 호출차 새 규정 (2025.10.09)", "https://m.gmw.cn/2025-10/09/content_1304179078.htm"], ["트립닷컴 - 상하이 디즈니랜드 가는법 (2026.08)", "https://kr.trip.com/guide/attraction/%EC%83%81%ED%95%98%EC%9D%B4+%EB%94%94%EC%A6%88%EB%8B%88%EB%9E%9C%EB%93%9C+%EA%B0%80%EB%8A%94%EB%B2%95.html"], ["상하이 파크 가이드 - 지하철 11호선", "https://shanghaiparkguide.com/ko/transfer/"]];
 YT.dis = [["VGcnUtV-gN0", "상하이 디즈니랜드 | 디즈니 동선, 택시 잡는 꿀팁 · 주토피아", "리베리베", "1,885", "11개월 전", "17:38"], ["cgQhxWrqs78", "디즈니 덕후가 알려주는 상하이 디즈니랜드 핵심정보 총정리", "세오의 일본살이", "72,077", "1년 전", "16:54"], ["6KWyTfYGjPU", "상하이 디즈니랜드요? '이거' 없으면 절대 가지 마세요!", "밍구스월드 MINGOOSE", "47,569", "2개월 전", "21:26"], ["fnDt5xOoTxA", "[상하이 디즈니랜드] 오픈런으로 어트랙션 10개 타기 대성공", "김당치", "19,796", "8개월 전", "23:07"], ["yYP38z8daK0", "디디 택시 & QR 주문 꿀팁!! 알리페이 디디", "웅웅 트립", "63,321", "1년 전", "4:39"]];
 function initDisRide(){
   const box = $("#disRide"); if(!box) return;
-  const DEST = "上海迪士尼乐园";
-  let h = `<div class="rnote">🧭 2일차 10/27(화) · 요약: <b>06:05 호텔 앞 디디 호출 → 06:15 출발 → 약 40분~1시간 · 100~150위안 → '디즈니 주차장 상하차 구역' 하차 → 걸어서 10분 → 입구</b></div>`;
+  const DEST = "美利亚上海帕克赛德酒店";
+  let h = `<div class="rnote">🧭 2일차 10/27(화) · 요약: <b>06:05 호텔 앞 디디 호출 → 06:15 출발 → 약 40분~1시간 · 100~150위안 → 'Meliá 호텔' 앞 대로변 하차 → 걸어서 10분 → 입구</b></div>`;
   h += `<div class="btnrow" style="margin:8px 0">${DR_LINKS.map(([t,u])=>`<a class="btn" href="${u}" target="_blank" rel="noopener">${t}</a>`).join("")}</div>`;
   DR_STEPS.forEach((st, i)=>{
     const photo = st.img ? `<img class="rphoto" loading="lazy" alt="${esc(st.t)}" src="https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(st.img)}?width=200" onerror="this.outerHTML='<div class=&quot;rphoto ph&quot;>${st.emo||"🏰"}</div>'">` : `<div class="rphoto ph">${st.emo||"🏰"}</div>`;
     let extra = "";
-    if(st.btn === "copy") extra = `<div class="cnrow2"><button type="button" class="btn" id="drCopy">목적지 '上海迪士尼乐园' 복사</button></div>`;
+    if(st.btn === "copy") extra = `<div class="cnrow2"><button type="button" class="btn" id="drCopy">목적지 '美利亚上海帕克赛德酒店' 복사</button></div>`;
     if(st.btn === "didi") extra = `<div class="cnrow2"><a class="btn primary" href="https://intl.alipay.com/" data-app="alipay" data-web="https://intl.alipay.com/" data-copy="${DEST}">알리페이(디디) 열기 · 목적지 복사</a></div>`;
     h += `<div class="rcard"><div class="rbody">${photo}<div class="rinfo"><div class="rtop"><span class="rname"><span class="stepn">${i}</span> ${esc(st.t)}</span></div>`+
       (st.sign ? `<div class="rcn">${esc(st.sign)}</div>${pr(st.sign)}` : "")+`</div></div>`+
@@ -2204,9 +2232,57 @@ function initDisRide(){
   h += ytList("dis");
   h += `<div class="rcredit">참고한 글: ${DR_REFS.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`).join(" · ")}<br>사진: 위키미디어 공용 · 위치 예시 사진 · ${DR_STEPS.filter(x=>x.cr).map(x=>esc(x.cr)).join(" / ")}</div>`;
   box.innerHTML = h;
-  const b = $("#drCopy"); if(b) b.addEventListener("click", async ()=>flash(b, await copyText(DEST), "목적지 '上海迪士尼乐园' 복사"));
+  const b = $("#drCopy"); if(b) b.addEventListener("click", async ()=>flash(b, await copyText(DEST), "목적지 복사"));
 }
 initDisRide();
+
+/* ---------- 디즈니 실시간 대기시간 · 운영시간 (themeparks.wiki 공개 데이터) ---------- */
+const TPW = "https://api.themeparks.wiki/v1/entity/ddc4357c-c148-4b36-9888-07894fe75e83";
+const DIS_LIVE_MAP = [[1,/Zootopia/i,"주토피아 핫 퍼슈트"],[2,/Pirates of the Caribbean/i,"캐리비안의 해적"],[3,/Soaring/i,"소어링"],[4,/Roaring Rapids/i,"로어링 래피드"],[5,/Seven Dwarfs/i,"세븐 드워프 마인 트레인"],[6,/Peter Pan/i,"피터팬"],[7,/Winnie the Pooh/i,"푸의 모험"],[9,/TRON Lightcycle/i,"TRON"],[10,/Buzz Lightyear/i,"버즈 라이트이어"]];
+const DIS_SHOW_MAP = [[/ILLUMINATE/i,"ILLUMINATE 야간 쇼"],[/Storybook Express/i,"퍼레이드"]];
+const DIS_ST = {OPERATING:"", CLOSED:"운영 종료", DOWN:"일시 중지", REFURBISHMENT:"점검 중"};
+let disLiveBusy = false;
+function cstHM(iso){ const d = new Date(Date.parse(iso) + 8*3600e3); return String(d.getUTCHours()).padStart(2,"0")+":"+String(d.getUTCMinutes()).padStart(2,"0"); }
+function renderDisLive(data, err){
+  const box = $("#disLive"); if(!box) return;
+  let h = `<div class="row" style="justify-content:space-between;align-items:center"><h3 style="margin:0">⏱ 실시간 대기시간 · 운영시간</h3><button type="button" class="btn" id="disLiveBtn">새로고침</button></div>`;
+  if(!data){ box.innerHTML = h + `<div class="muted small" style="margin-top:8px">${err ? "불러오지 못했습니다 · 인터넷 연결 확인" : "불러오는 중…"}</div>`; return; }
+  const today = nowSH().date, sch = data.sch || [];
+  const hrs = d => { const x = sch.find(z=>z.date===d && z.type==="OPERATING"); return x ? cstHM(x.openingTime)+"~"+cstHM(x.closingTime) : "정보 없음"; };
+  h += `<div class="small" style="margin-top:6px">${today!=="2026-10-27" && hrs(today)!=="정보 없음" ? `오늘(${today.slice(5).replace("-","/")}) 운영 <b>${hrs(today)}</b> · ` : ""}10/27 운영 <b>${hrs("2026-10-27")}</b></div>`;
+  const live = data.live || [], rows = [];
+  DIS_LIVE_MAP.forEach(([n, re, ko])=>{
+    const a = live.find(x=>x.entityType==="ATTRACTION" && re.test(x.name)); if(!a) return;
+    const w = a.queue && a.queue.STANDBY && a.queue.STANDBY.waitTime;
+    const v = a.status==="OPERATING" ? (w!=null ? `<b>${w}분</b>` : "운영 중") : `<span class="muted">${DIS_ST[a.status]||a.status}</span>`;
+    rows.push(`<tr><td style="width:30px"><button type="button" class="pinchip" data-dpin="${n}">${n}</button></td><td>${ko}</td><td class="num">${v}</td></tr>`);
+  });
+  DIS_SHOW_MAP.forEach(([re, ko])=>{
+    const a = live.find(x=>x.entityType==="SHOW" && re.test(x.name)); if(!a) return;
+    const ts = (a.showtimes||[]).filter(t=>t.startTime).map(t=>cstHM(t.startTime));
+    rows.push(`<tr><td style="width:30px"><span class="pinchip off">♪</span></td><td>${ko}</td><td class="num">${ts.length ? ts.join(" · ") : '<span class="muted">오늘 시간 없음</span>'}</td></tr>`);
+  });
+  h += `<table style="margin-top:6px"><tbody>${rows.join("")}</tbody></table>`;
+  const others = live.filter(x=>x.entityType==="ATTRACTION" && !DIS_LIVE_MAP.some(([,re])=>re.test(x.name)) && x.status==="OPERATING" && x.queue && x.queue.STANDBY && x.queue.STANDBY.waitTime!=null).sort((a,b)=>a.queue.STANDBY.waitTime-b.queue.STANDBY.waitTime);
+  if(others.length) h += `<details style="margin-top:6px"><summary class="small">그 밖의 놀이기구 (대기 짧은 순)</summary><table><tbody>${others.map(x=>`<tr><td>${esc(x.name)}</td><td class="num">${x.queue.STANDBY.waitTime}분</td></tr>`).join("")}</tbody></table></details>`;
+  const t = new Date(data.t + 8*3600e3);
+  h += `<div class="muted small" style="margin-top:6px">상하이 시간 ${String(t.getUTCMonth()+1)}/${t.getUTCDate()} ${String(t.getUTCHours()).padStart(2,"0")}:${String(t.getUTCMinutes()).padStart(2,"0")} 기준${err?" (저장된 정보)":""} · 공식 디즈니 앱과 조금 다를 수 있음</div>`;
+  box.innerHTML = h;
+}
+async function loadDisLive(force){
+  if(disLiveBusy) return; disLiveBusy = true;
+  const saved = store.get("sh-dis-live", null);
+  if(saved && !force && Date.now()-saved.t < 5*60e3){ renderDisLive(saved); disLiveBusy = false; return; }
+  renderDisLive(saved, false);
+  try{
+    const [l, sc] = await Promise.all([fetch(TPW+"/live").then(r=>r.json()), fetch(TPW+"/schedule").then(r=>r.json())]);
+    const data = {t: Date.now(), live: (l.liveData||[]).map(x=>({name:x.name, entityType:x.entityType, status:x.status, queue:x.queue, showtimes:x.showtimes})), sch: (sc.schedule||[]).filter(x=>x.date>=nowSH().date).slice(0,20)};
+    store.set("sh-dis-live", data); renderDisLive(data);
+  }catch(e){ renderDisLive(saved, true); }
+  disLiveBusy = false;
+}
+document.addEventListener("click", e=>{ if(e.target.closest && e.target.closest("#disLiveBtn")) loadDisLive(true); });
+$("#disLive").addEventListener("click", e=>{ const b=e.target.closest("[data-dpin]"); if(b) focusPin(+b.dataset.dpin); });
 
 initRestos();
 initShops();
