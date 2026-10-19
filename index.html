@@ -991,13 +991,21 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
     </div>
     <div class="card" id="nearCard" style="margin-bottom:12px">
       <h3>🚻 내 주변 화장실 · 식당 (현재 위치 기준)</h3>
-      <div class="btnrow" style="margin-top:8px">
+      <div class="small" style="margin-top:8px"><b>고덕지도</b> (중국 정보가 가장 정확)</div>
+      <div class="btnrow" style="margin-top:4px">
         <button type="button" class="btn primary" data-near="厕所">🚻 화장실</button>
         <button type="button" class="btn primary" data-near="美食">🍜 식당</button>
         <button type="button" class="btn" data-near="便利店">🏪 편의점</button>
         <button type="button" class="btn" data-near="咖啡">☕ 카페</button>
       </div>
-      <div class="small muted" id="nearMsg" style="margin-top:6px">고덕지도 앱에서 가까운 순으로 열림</div>
+      <div class="small" style="margin-top:10px"><b>구글지도</b> (한국어 · 리뷰 · 로밍/eSIM 필요)</div>
+      <div class="btnrow" style="margin-top:4px">
+        <button type="button" class="btn primary" data-near="厕所" data-g="public toilet">🚻 화장실</button>
+        <button type="button" class="btn primary" data-near="美食" data-g="restaurants">🍜 식당</button>
+        <button type="button" class="btn" data-near="便利店" data-g="convenience store">🏪 편의점</button>
+        <button type="button" class="btn" data-near="咖啡" data-g="cafe">☕ 카페</button>
+      </div>
+      <div class="small muted" id="nearMsg" style="margin-top:6px">가까운 순으로 열림 · 거리 표시</div>
       <details style="margin-top:8px">
         <summary class="small">화장실 찾을 때 쓰는 중국어 · 팁</summary>
         <ul class="cnlist" style="margin-top:6px">
@@ -2060,8 +2068,16 @@ const CNY_KRW = 199;   // 1위안 = 약 199원 (2026-10-16 위안-원 직거래 
 /* ---------- 내 주변 화장실 · 식당 (고덕지도 주변 검색) ---------- */
 function nearGo(kw, b){
   const msg = $("#nearMsg");
+  const gq = b && b.dataset.g;
   const open = (lat, lng, acc) => {
     const g = wgs2gcj(lat, lng);
+    if(gq){
+      const gpath = "www.google.com/maps/search/"+encodeURIComponent(gq)+"/@"+g.lat.toFixed(6)+","+g.lng.toFixed(6)+",18z";
+      if(msg) msg.textContent = "현재 위치 확인 (정확도 ±"+Math.round(acc||0)+"m) → 구글지도 여는 중…";
+      if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||"")) openApp("gmaps", "https://"+gpath, "", gpath);
+      else window.open("https://"+gpath, "_blank", "noopener");
+      return;
+    }
     const web = "https://uri.amap.com/search?keyword="+encodeURIComponent(kw)+"&center="+g.lng.toFixed(6)+","+g.lat.toFixed(6)+"&coordinate=gaode&view=map&src=shanghai-trip&callnative=1";
     const path = "arroundpoi?sourceApplication=shanghai-trip&keywords="+encodeURIComponent(kw)+"&lat="+lat.toFixed(6)+"&lon="+lng.toFixed(6)+"&dev=1";
     if(msg) msg.textContent = "현재 위치 확인 (정확도 ±"+Math.round(acc||0)+"m) → 고덕지도 여는 중…";
