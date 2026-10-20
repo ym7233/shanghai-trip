@@ -1011,7 +1011,7 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
         <button type="button" class="btn" data-near="便利店" data-g="convenience store">🏪 편의점</button>
         <button type="button" class="btn" data-near="咖啡" data-g="cafe">☕ 카페</button>
       </div>
-      <div class="small" style="margin-top:10px"><b>우리 맛집·쇼핑 목록</b> (메뉴판·가격 확인한 곳)</div>
+      <div class="small" style="margin-top:10px"><b>내 주변 식당 목록</b> (중국: 우리 맛집·쇼핑 + 실시간 · 한국: 실시간)</div>
       <div class="btnrow" style="margin-top:4px"><button type="button" class="btn gold" id="nearOurs">📍 가까운 순으로 보기</button></div>
       <div id="nearList"></div>
       <div class="small muted" id="nearMsg" style="margin-top:6px">가까운 순으로 열림 · 거리 표시</div>
@@ -2113,16 +2113,23 @@ function nearOurs(){
   const seen = new Set();
   const push = (r, kind) => { const m = MENUS[r.cn]; if(!m || !m.ll || seen.has(r.cn)) return; seen.add(r.cn); pool.push({r, m, kind}); };
   RESTOS.flatMap(a=>a.items).forEach(r=>push(r,"🍜")); RBUDGET.forEach(r=>push(r,"🍜")); SHOPS.forEach(r=>push(r,"🎁"));
+  const fd = d => d < 1000 ? Math.round(d/10)*10+"m" : (d/1000).toFixed(d<10000?1:0)+"km";
   const show = (lat, lng, acc) => {
-    const L = pool.map(x=>Object.assign({d: haversine(lat, lng, x.m.ll[0], x.m.ll[1])}, x)).sort((a,b)=>a.d-b.d).slice(0, 8);
-    const fd = d => d < 1000 ? Math.round(d/10)*10+"m" : (d/1000).toFixed(d<10000?1:0)+"km";
-    box.innerHTML = `<div class="small muted" style="margin:6px 0">현재 위치 기준 (정확도 ±${Math.round(acc||0)}m) · 가까운 순 8곳</div>` + L.map(x=>
-      `<div class="rcard" style="margin-top:6px"><div class="rtop"><span class="rname">${x.kind} ${esc(x.r.ko)}</span><span class="rper">${fd(x.d)}</span></div>`+
-      `<div class="rcn" style="font-size:14px">${esc(x.r.cn)}</div>${pr(x.r.cn)}`+
-      (x.r.when ? `<div class="small muted">🗓 ${esc(x.r.when)}</div>` : "")+
-      menuFold(x.r.cn)+
-      `<div class="cnrow2"><a class="btn" href="${navTo(x.m.ll[0], x.m.ll[1], x.r.cn, 'walk')}" target="_blank" rel="noopener">고덕 길찾기</a></div></div>`).join("");
+    const inSH = haversine(lat, lng, 31.2304, 121.4737) < 300000;
+    let h = `<div class="row" style="justify-content:space-between;align-items:center;margin:6px 0"><span class="small muted">현재 위치 기준 (정확도 ±${Math.round(acc||0)}m)</span><button type="button" class="btn" id="nearFold" style="padding:4px 10px;font-size:12px">▲ 접기</button></div>`;
+    if(inSH){
+      const L = pool.map(x=>Object.assign({d: haversine(lat, lng, x.m.ll[0], x.m.ll[1])}, x)).sort((a,b)=>a.d-b.d).slice(0, 8);
+      h += `<div class="small" style="margin:4px 0"><b>⭐ 우리 맛집·쇼핑 (메뉴판·가격 확인)</b></div>` + L.map(x=>
+        `<div class="rcard" style="margin-top:6px"><div class="rtop"><span class="rname">${x.kind} ${esc(x.r.ko)}</span><span class="rper">${fd(x.d)}</span></div>`+
+        `<div class="rcn" style="font-size:14px">${esc(x.r.cn)}</div>${pr(x.r.cn)}`+
+        (x.r.when ? `<div class="small muted">🗓 ${esc(x.r.when)}</div>` : "")+
+        menuFold(x.r.cn)+
+        `<div class="cnrow2"><a class="btn" href="${navTo(x.m.ll[0], x.m.ll[1], x.r.cn, 'walk')}" target="_blank" rel="noopener">고덕 길찾기</a></div></div>`).join("");
+    }
+    h += `<div class="small" style="margin:10px 0 4px"><b>📡 지금 주변 식당 (실시간 · 가까운 순)</b></div><div id="nearLive" class="small muted">불러오는 중…</div>`;
+    box.innerHTML = h;
     if(msg) msg.textContent = "가까운 순으로 열림 · 거리 표시";
+    nearLive(lat, lng, inSH);
   };
   if(userPos && Date.now() - (userPos.t||0) < 60000){ show(userPos.lat, userPos.lng, userPos.acc); return; }
   if(!navigator.geolocation){ if(msg) msg.textContent = "이 휴대폰에서 위치를 쓸 수 없습니다"; return; }
@@ -2131,7 +2138,42 @@ function nearOurs(){
     e=>{ if(msg) msg.textContent = e.code === 1 ? "위치 권한을 허용해 주세요 (브라우저 설정 → 위치)" : "위치를 못 찾았습니다 · 잠시 후 다시 눌러 주세요"; },
     {enableHighAccuracy:true, timeout:15000, maximumAge:30000});
 }
-document.addEventListener("click", e=>{ if(e.target.closest && e.target.closest("#nearOurs")) nearOurs(); });
+document.addEventListener("click", e=>{
+  if(!(e.target.closest && e.target.closest("#nearOurs, #nearFold"))) return;
+  const box = $("#nearList"), btn = $("#nearOurs");
+  if(box.innerHTML && !box.hidden){ box.hidden = true; btn.textContent = "📍 가까운 순으로 보기"; return; }
+  box.hidden = false; btn.textContent = "▲ 목록 접기"; nearOurs();
+});
+/* 실시간 주변 식당 (OpenStreetMap 공개 데이터 · 한국·중국 공통) */
+const CUISINE_KO = {korean:"한식",chinese:"중식",japanese:"일식",sushi:"초밥",ramen:"라멘",noodle:"면 요리",noodles:"면 요리",pizza:"피자",burger:"햄버거",chicken:"치킨",fried_chicken:"치킨",coffee_shop:"카페",cafe:"카페",bakery:"빵집",dessert:"디저트",ice_cream:"아이스크림",barbecue:"고기구이",hot_pot:"훠궈(샤브샤브)",hotpot:"훠궈(샤브샤브)",dumpling:"만두",dumplings:"만두",seafood:"해산물",steak_house:"스테이크",italian:"이탈리안",western:"양식",american:"양식",fast_food:"패스트푸드",sandwich:"샌드위치",tea:"차·음료",bubble_tea:"버블티",shanghai:"상하이 요리",cantonese:"광둥 요리",sichuan:"쓰촨(매운) 요리",regional:"지역 요리",asian:"아시아 요리",thai:"태국 요리",vietnamese:"베트남 요리",indian:"인도 요리",chicken_rice:"치킨라이스",kebab:"케밥",soup:"국물 요리",bbq:"고기구이"};
+const AMEN_KO = {restaurant:"식당", fast_food:"패스트푸드", cafe:"카페", food_court:"푸드코트"};
+async function nearLive(lat, lng, inCN){
+  const out = $("#nearLive"); if(!out) return;
+  const fd = d => d < 1000 ? Math.round(d/10)*10+"m" : (d/1000).toFixed(d<10000?1:0)+"km";
+  const dLat = 0.006, dLng = 0.007;   // 약 600~700m 범위
+  const vb = [(lng-dLng).toFixed(5), (lat+dLat).toFixed(5), (lng+dLng).toFixed(5), (lat-dLat).toFixed(5)].join(",");
+  const q = kw => fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&extratags=1&namedetails=1&accept-language=ko,zh,en&limit=40&bounded=1&viewbox="+vb+"&q="+kw).then(r=>r.json()).catch(()=>[]);
+  try{
+    const [a, b2, c] = await Promise.all([q("restaurant"), q("fast food"), q("cafe")]);
+    const seen = new Set();
+    const L = [...a, ...b2, ...c].filter(x=>{ const k = x.osm_type+x.osm_id; if(seen.has(k)) return false; seen.add(k); return x.name || (x.namedetails && x.namedetails.name); })
+      .map(x=>Object.assign({d: haversine(lat, lng, +x.lat, +x.lon)}, x)).sort((p,q2)=>p.d-q2.d).slice(0, 15);
+    if(!L.length){ out.innerHTML = "주변에 등록된 식당 정보가 없습니다 · 위의 지도 버튼으로 찾아보세요"; return; }
+    out.className = "";
+    out.innerHTML = L.map(x=>{
+      const nm = x.name || x.namedetails.name, et = x.extratags || {};
+      const cu = (et.cuisine||"").split(";").map(c=>CUISINE_KO[c.trim()]||"").filter(Boolean).join(" · ");
+      const kind = AMEN_KO[x.type] || "식당";
+      const links = inCN
+        ? `<a class="dxa" href="${navTo(+x.lat, +x.lon, nm, 'walk')}" target="_blank" rel="noopener">고덕 길찾기</a><a class="dxa" data-app="dianping" data-path="searchshoplist?keyword=${encodeURIComponent(nm)}" data-web="https://m.dianping.com/" href="https://m.dianping.com/">따종디엔핑 메뉴·후기</a>`
+        : `<a class="dxa" href="https://map.naver.com/p/search/${encodeURIComponent(nm)}" target="_blank" rel="noopener">네이버지도 메뉴·후기</a><a class="dxa" href="https://map.kakao.com/link/search/${encodeURIComponent(nm)}" target="_blank" rel="noopener">카카오맵</a>`;
+      return `<div class="rcard" style="margin-top:6px;padding:8px 10px"><div class="rtop"><span class="rname">${esc(nm)}</span><span class="rper">${fd(x.d)}</span></div>`+
+        `<div class="small muted">${kind}${cu && cu !== kind ? " · "+cu : ""}${et.opening_hours ? " · 🕒 "+esc(et.opening_hours) : ""}</div>`+
+        (inCN ? `<div class="small muted">메뉴는 '메뉴판 읽기 도우미'로 확인 · 사진은 파파고 이미지 번역</div>` : "")+
+        `<div class="dxlinks" style="margin-top:6px">${links}</div></div>`;
+    }).join("") + `<div class="small muted" style="margin-top:6px">오픈스트리트맵 공개 데이터 · 등록 안 된 가게도 있음 (전체는 위 고덕·구글 버튼)</div>`;
+  }catch(e){ out.textContent = "불러오지 못했습니다 · 인터넷 연결 확인"; }
+}
 /* ---------- 돈 표기에 원화 자동 병기 (위안·달러 → 약 ○원) ---------- */
 const USD_KRW = 1334;   // 1달러 ≈ 1,334원 (2026-10-19 기준)
 function fmtWon(n){ return n >= 100000 ? Math.round(n/10000).toLocaleString("ko-KR")+"만" : (Math.round(n/100)*100).toLocaleString("ko-KR"); }
