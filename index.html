@@ -929,6 +929,23 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
       <div class="wxgrid" id="wxBody"><div class="muted small">불러오는 중…</div></div>
       <div class="wxfoot"><span class="muted small" id="wxTime"></span><span class="wxlinks"><a class="btn" href="https://search.naver.com/search.naver?query=%EC%83%81%ED%95%98%EC%9D%B4+%EB%82%A0%EC%94%A8" target="_blank" rel="noopener">네이버 날씨</a><a class="btn" href="http://www.weather.com.cn/weather/101020100.shtml" target="_blank" rel="noopener">중국 날씨</a></span></div>
     </div>
+    <div class="card" id="famCard" style="margin-top:12px">
+      <div class="wxhead"><b>👨‍👩‍👧‍👦 가족 위치</b></div>
+      <div class="cnrow2" id="famWho" style="margin-top:2px"><span class="small muted">나는</span><button type="button" class="btn" data-who="아빠">아빠</button><button type="button" class="btn" data-who="엄마">엄마</button><button type="button" class="btn" data-who="첫째">첫째</button><button type="button" class="btn" data-who="둘째">둘째</button></div>
+      <div class="cnrow2"><button type="button" class="btn primary" id="famSend">📍 내 위치 가족에게 보내기</button><a class="btn" href="https://smartthingsfind.samsung.com/" target="_blank" rel="noopener">📡 Samsung Find · 가족 실시간 위치</a></div>
+      <div class="small muted" id="famMsg"></div>
+      <details style="margin-top:8px">
+        <summary class="small"><b>처음 한 번 · Samsung Find 가족 위치 켜기 (출발 전)</b></summary>
+        <ol class="small" style="margin:6px 0 0;padding-left:18px">
+          <li>아빠 휴대폰: 설정 → 삼성 계정 → <b>가족</b> → 가족 그룹 만들기 → 엄마·첫째·둘째 초대 (최대 5명)</li>
+          <li>4명 모두: 설정 → 삼성 계정 → 내 디바이스 찾기 → <b>'이 휴대전화를 찾을 수 있도록 허용'</b> 켜기</li>
+          <li>4명 모두: <b>Samsung Find</b> 앱 → 사람 탭 → <b>+</b> → 가족 고르기 → 공유 기간(10/26~10/29) → 공유</li>
+          <li>보는 법: Samsung Find 앱 → 사람 탭에서 가족 위치 확인</li>
+          <li>중국에서는 <b>로밍·eSIM 데이터</b>가 켜져 있어야 위치가 새로 고쳐짐</li>
+          <li>여행이 끝나면 사람 탭에서 위치 공유 끄기</li>
+        </ol>
+      </details>
+    </div>
     <div class="card" id="liveCard" style="margin-top:12px">
       <div class="wxhead"><b>📡 실시간 여행·안전 정보</b><button type="button" class="btn" id="liveRefresh">새로고침</button></div>
       <div id="liveBody" class="small muted">불러오는 중…</div>
@@ -2106,6 +2123,28 @@ function flash(b, ok, label){
 }
 const PRON = {"浦东国际机场T2": "푸동 궈지 지창 T2", "佳家汤包 黄河路": "쟈쟈 탕바오 황허 루", "新世界大丸百货": "신스지에 따완 바이훠", "枣夹核桃": "짜오쟈 허타오", "新世界城南2门": "신스지에청 난 얼 먼", "人民广场站7号口": "런민광창 짠 치 하오 커우", "M&M'S 世茂广场": "엠앤엠즈 스마오 광창", "南京东路829号": "난징 똥루 바이얼스지우 하오", "豫园商城": "위위엔 샹청", "上海市黄浦区福州路431号1号商铺": "샹하이 스 황푸 취 푸저우 루 쓰싼이 하오 이 하오 샹푸", "美利亚上海帕克赛德酒店": "메이리야 샹하이 파커싸이더 지우띠엔", "早享卡": "자오샹카", "安检区": "안지엔 취", "取票验票区": "취퍄오 옌퍄오 취", "迪士尼停车场上下客区": "디스니 팅처창 상샤커취", "生态园路上下客区": "셩타이위엔루 상샤커취", "请去这个地址": "칭 취 쩌거 디즈", "外国人": "와이궈런", "行李提取": "싱리 티취", "无申报通道": "우 션빠오 통따오", "快车": "콰이처", "网约车上车点": "왕위에처 상처디엔", "上海第一食品商店": "샹하이 디이 스핀 샹띠엔", "名创优品": "밍촹 요우핀", "豫园商城": "위위엔 샹청", "迪士尼小镇": "디스니 샤오쩐", "国际饭店西饼屋": "궈지 판띠엔 시빙우", "盒马鲜生": "허마 시엔셩", "乌镇西栅": "우전 시짜", "浦东机场免税店": "푸똥 지창 미엔수이띠엔", "便宜一点": "피엔이 이디엔", "城际上海外滩南京路步行街酒店": "청지 샹하이 와이탄 난징루 부싱지에 지우띠엔", "吉祥馄饨": "지샹 훈툰", "全家便利店": "취엔쟈 삐엔리띠엔", "便利店便当": "삐엔리띠엔 삐엔땅", "兰州拉面": "란저우 라미엔", "舌尖葱包烩": "셔지엔 총빠오후이", "肯德基": "컨더지", "佳家汤包": "쟈쟈 탕바오", "小杨生煎": "샤오양 셩지엔", "上海姥姥家常饭馆": "샹하이 라오라오 쟈창 판관", "海底捞火锅": "하이디라오 훠꿔", "外婆家": "와이포쟈", "南翔馒头店": "난샹 만터우 띠엔", "绿波廊": "뤼보랑", "鼎泰丰": "딩타이펑", "老吉士": "라오지스", "酷矿gelato": "쿠쾅 젤라또", "皇家宴会厅": "황쟈 옌후이팅", "老藤树食栈": "라오텅수 스잔", "烤火鸡腿": "카오 훠지퉤이", "书生羊肉面": "슈셩 양러우미엔", "吴妈馄饨": "우마 훈툰", "茅老太臭豆腐": "마오라오타이 처우떠우푸", "不要辣": "부야오 라", "不要香菜": "부야오 샹차이", "请给我儿童椅": "칭 게이 워 얼퉁이", "请去这个地址：上海市黄浦区福州路431号": "칭 취 쩌거 디즈: 샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "上海浦东国际机场": "샹하이 푸똥 꿔지 지창", "上海市黄浦区福州路431号": "샹하이 스 황푸 취 푸저우 루 쓰싼이 하오", "南京东路步行街": "난징 똥루 뿌싱지에", "海底捞火锅 南京东路": "하이디라오 훠꿔 난징 똥루", "豫园": "위위엔", "城隍庙": "청황먀오", "大白兔奶糖": "따바이투 나이탕", "外滩": "와이탄", "上海外滩英迪格酒店": "샹하이 와이탄 잉디거 지우띠엔", "十六铺码头": "스리우푸 마터우", "上海迪士尼度假区": "샹하이 디스니 뚜지아취", "新天地": "신티엔띠", "大韩民国临时政府旧址": "따한 민구어 린스 정푸 지우즈", "田子坊": "티엔쯔팡", "人民广场": "런민 광창", "乌镇": "우전", "武康大楼": "우캉 따로우", "武康路": "우캉 루", "上海迪士尼乐园": "샹하이 디스니 러위엔", "迪士尼站": "디스니 짠", "请在这里停车": "칭 짜이 쩌리 팅처", "多少钱？": "뚜어샤오 치엔", "多少钱": "뚜어샤오 치엔", "请给我开发票": "칭 게이 워 카이 파피아오", "洗手间在哪里？": "시서우지엔 짜이 나리", "洗手间在哪里": "시서우지엔 짜이 나리", "请去上海迪士尼乐园": "칭 취 샹하이 디스니 러위엔", "出租车": "추주처", "滴滴出行": "디디 추싱"};
 function pr(c){ return PRON[c] ? '<div class="cnpr">'+esc(PRON[c])+'</div>' : ''; }
+/* ---------- 가족 위치: 내 위치를 지도 링크로 만들어 카톡·문자로 보내기 (서버 없음) ---------- */
+function initFam(){
+  const box = $("#famWho"); if(!box) return;
+  const mark = () => { const me = store.get("sh-me", ""); box.querySelectorAll("[data-who]").forEach(b=>b.classList.toggle("gold", b.dataset.who===me)); };
+  mark();
+  box.addEventListener("click", e=>{ const b = e.target.closest("[data-who]"); if(!b) return; store.set("sh-me", b.dataset.who); mark(); });
+  $("#famSend").addEventListener("click", ()=>{
+    const msg = $("#famMsg"), me = store.get("sh-me", "");
+    if(!me){ msg.textContent = "먼저 '나는' 옆에서 본인을 눌러 주세요"; return; }
+    if(!navigator.geolocation){ msg.textContent = "이 휴대폰에서 위치를 쓸 수 없습니다"; return; }
+    msg.textContent = "위치 찾는 중…";
+    navigator.geolocation.getCurrentPosition(async p=>{
+      const la = p.coords.latitude, ln = p.coords.longitude, g = wgs2gcj(la, ln);
+      const t = new Date().toLocaleTimeString("ko-KR", {hour:"numeric", minute:"2-digit"});
+      const text = `[${me}] 지금 여기 있어요 (${t} · 오차 약 ${Math.round(p.coords.accuracy)}m)\n고덕지도: https://uri.amap.com/marker?position=${g.lng.toFixed(6)},${g.lat.toFixed(6)}&name=${encodeURIComponent(me+" 위치")}&coordinate=gaode&callnative=1\n구글지도: https://maps.google.com/?q=${la.toFixed(6)},${ln.toFixed(6)}`;
+      if(navigator.share){ try{ await navigator.share({text}); msg.textContent = "보냈어요 · 받은 사람은 링크를 누르면 지도가 열려요"; return; }catch(e){ if(e && e.name==="AbortError"){ msg.textContent = ""; return; } } }
+      const ok = await copyText(text);
+      msg.textContent = ok ? "복사됨 · 가족 카톡방에 붙여넣기" : text;
+    }, ()=>{ msg.textContent = "위치를 가져오지 못했어요 · 휴대폰 위치(GPS)를 켜고 다시 눌러 주세요"; }, {enableHighAccuracy:true, timeout:15000, maximumAge:30000});
+  });
+}
+initFam();
 function initCn(){
   const box = $("#cnList"); if(!box) return;
   box.innerHTML = CN_PLACES.map((p,i)=>
