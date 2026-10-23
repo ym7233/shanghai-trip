@@ -932,18 +932,28 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
     <div class="card" id="famCard" style="margin-top:12px">
       <div class="wxhead"><b>👨‍👩‍👧‍👦 가족 위치</b></div>
       <div class="cnrow2" id="famWho" style="margin-top:2px"><span class="small muted">나는</span><button type="button" class="btn" data-who="아빠">아빠</button><button type="button" class="btn" data-who="엄마">엄마</button><button type="button" class="btn" data-who="첫째">첫째</button><button type="button" class="btn" data-who="둘째">둘째</button></div>
-      <div class="cnrow2"><button type="button" class="btn primary" id="famSend">📍 내 위치 가족에게 보내기</button><a class="btn" href="https://smartthingsfind.samsung.com/" target="_blank" rel="noopener">📡 Samsung Find · 가족 실시간 위치</a></div>
+      <div class="cnrow2"><button type="button" class="btn primary" id="famSend">📍 내 위치 가족에게 보내기</button></div>
+      <div class="cnrow2"><a class="btn" data-app="sfind" data-web="https://smartthingsfind.samsung.com/" href="https://smartthingsfind.samsung.com/" target="_blank" rel="noopener">📡 삼성 Find</a><a class="btn" data-app="gmapsapp" data-web="https://www.google.com/maps" href="https://www.google.com/maps" target="_blank" rel="noopener">🗺️ 구글 지도 위치 공유</a><a class="btn" data-app="kakaomap" data-web="https://map.kakao.com/" href="https://map.kakao.com/" target="_blank" rel="noopener">🟡 카카오맵 친구위치</a></div>
       <div class="small muted" id="famMsg"></div>
       <details style="margin-top:8px">
-        <summary class="small"><b>처음 한 번 · Samsung Find 가족 위치 켜기 (출발 전)</b></summary>
-        <ol class="small" style="margin:6px 0 0;padding-left:18px">
+        <summary class="small"><b>처음 한 번 · 가족 위치 켜기 (출발 전 · 셋 중 하나만 해도 됨)</b></summary>
+        <div class="small" style="margin-top:6px"><b>📡 삼성 Find</b> (4명 모두 갤럭시라 추천)</div>
+        <ol class="small" style="margin:2px 0 0;padding-left:18px">
           <li>아빠 휴대폰: 설정 → 삼성 계정 → <b>가족</b> → 가족 그룹 만들기 → 엄마·첫째·둘째 초대 (최대 5명)</li>
           <li>4명 모두: 설정 → 삼성 계정 → 내 디바이스 찾기 → <b>'이 휴대전화를 찾을 수 있도록 허용'</b> 켜기</li>
-          <li>4명 모두: <b>Samsung Find</b> 앱 → 사람 탭 → <b>+</b> → 가족 고르기 → 공유 기간(10/26~10/29) → 공유</li>
-          <li>보는 법: Samsung Find 앱 → 사람 탭에서 가족 위치 확인</li>
-          <li>중국에서는 <b>로밍·eSIM 데이터</b>가 켜져 있어야 위치가 새로 고쳐짐</li>
-          <li>여행이 끝나면 사람 탭에서 위치 공유 끄기</li>
+          <li>4명 모두: 삼성 Find 앱 → 사람 탭 → <b>+</b> → 가족 고르기 → 공유 기간(10/26~10/29) → 공유</li>
         </ol>
+        <div class="small" style="margin-top:6px"><b>🗺️ 구글 지도</b></div>
+        <ol class="small" style="margin:2px 0 0;padding-left:18px">
+          <li>구글 지도 → 오른쪽 위 <b>프로필 사진</b> → <b>위치 공유</b> → <b>새 공유</b></li>
+          <li>공유 기간(사용 중지할 때까지 또는 날짜) · 가족 고르기 → 공유</li>
+        </ol>
+        <div class="small" style="margin-top:6px"><b>🟡 카카오맵</b></div>
+        <ol class="small" style="margin:2px 0 0;padding-left:18px">
+          <li>카카오맵 → <b>친구위치</b> → 가족 단톡방이나 가족을 초대 (동의한 사람끼리만 보임)</li>
+          <li>끝날 때까지 계속 공유 · '내 위치 숨기기'로 잠깐 끌 수 있음</li>
+        </ol>
+        <div class="small muted" style="margin-top:6px">중국에서는 로밍·eSIM 데이터가 켜져 있어야 위치가 새로 고쳐짐 · 구글·카카오 지도 화면은 중국에서 위치가 조금 어긋나 보일 수 있음 · 여행이 끝나면 공유 끄기</div>
       </details>
     </div>
     <div class="card" id="liveCard" style="margin-top:12px">
@@ -2310,9 +2320,14 @@ function appHref(app, web, path){
     gmaps:{pkg:"com.google.android.apps.maps", scheme:"https", ios:"comgooglemaps://"},
     amapapp:{pkg:"com.autonavi.minimap", scheme:"androidamap", ios:"iosamap://"},
     dianping:{pkg:"", scheme:"dianping", ios:"dianping://"},
+    sfind:{pkg:"com.samsung.android.app.find", launch:true, ios:"", store:"https://play.google.com/store/apps/details?id=com.samsung.android.app.find"},
+    gmapsapp:{pkg:"com.google.android.apps.maps", scheme:"https", host:"www.google.com/maps", ios:"comgooglemaps://", store:"https://play.google.com/store/apps/details?id=com.google.android.apps.maps"},
+    kakaomap:{pkg:"net.daum.android.map", scheme:"kakaomap", host:"open", ios:"kakaomap://open", store:"https://play.google.com/store/apps/details?id=net.daum.android.map"},
     disney:{pkg:"com.disney.shanghaidisneyland_goo", scheme:"https", host:"www.shanghaidisneyresort.com/", ios:"", store:"https://play.google.com/store/apps/details?id=com.disney.shanghaidisneyland_goo"}
   }[app];
   if(!m) return null;
+  if(android && m.launch) return "intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package="+m.pkg+";S.browser_fallback_url="+encodeURIComponent(m.store||web)+";end";
+  if(ios && !m.ios) return null;
   if(android) return "intent://"+(path||m.host||"")+"#Intent;scheme="+m.scheme+(m.pkg ? ";package="+m.pkg : "")+";S.browser_fallback_url="+encodeURIComponent(m.store||web)+";end";
   if(ios) return m.ios+(path||"");
   return null;
