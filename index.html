@@ -1356,6 +1356,9 @@ details.fold>summary{cursor:pointer;font-weight:600;padding:6px 4px;list-style:n
         <tfoot id="budgetFoot"></tfoot>
       </table>
     </div>
+    <h2 style="margin-top:18px">여행 중 실제 지출 (10/26~10/29)</h2>
+    <div class="card" id="spendSum"></div>
+    <div id="spendDays"></div>
   </section>
 
   <!-- REVIEW -->
@@ -2112,6 +2115,31 @@ renderSched();
 renderDisneyList();
 renderChecks();
 renderBudget();
+const SPEND = [["10/26", "오전", "전기차 충전", "교통", 10000, null], ["10/26", "오전", "밥값", "식비", 45400, null], ["10/26", "오전", "공깃밥 2개", "식비", 2000, null], ["10/26", "오전", "편의점", "간식", 6000, null], ["10/26", "14:07", "호텔 업그레이드·조식", "숙소", 44900, 225.57], ["10/26", "14:08", "호텔 업그레이드·조식", "숙소", 44900, 225.57], ["10/26", "14:09", "호텔 업그레이드·조식", "숙소", 39800, 200.0], ["10/26", "14:15", "호텔 업그레이드·조식", "숙소", 44900, 225.57], ["10/26", "14:16", "호텔 업그레이드·조식", "숙소", 39800, 200.0], ["10/26", "14:16", "호텔 업그레이드·조식", "숙소", 19900, 100.0], ["10/26", "14:47", "디디 택시 (호텔→예원상성)", "교통", 2900, 14.5], ["10/26", "15:50", "남상만두 (예원점)", "식비", 33800, 170.0], ["10/26", "16:12", "남상만두 추가 (맥주·펩시)", "식비", 6400, 32.0], ["10/26", "16:39", "탕후루 2개 (喜识冰糖葫芦炒酸奶)", "간식", 10000, 50.0], ["10/26", "17:04", "대추과자 (QRCode0688)", "쇼핑", 39500, 198.65], ["10/26", "17:04", "대추과자 (QRCode0688)", "쇼핑", 22600, 113.39], ["10/26", "18:55", "맥도날드 햄버거 (외탄 BFC점)", "식비", 21800, 109.5], ["10/26", "21:49", "디디 택시 (유람선 후)", "교통", 2200, 11.1], ["10/26", "21:59", "패밀리마트 편의점", "간식", 6000, 30.0], ["10/27", "08:30", "디디 택시 (호텔→디즈니)", "교통", 29100, 146.4], ["10/27", "12:56", "디즈니 칠면조 다리 2개", "식비", 33800, 170.0], ["10/27", "12:56", "디즈니 옥수수 1개", "식비", 8000, 40.0], ["10/27", "13:27", "디즈니 콜라", "식비", 3000, 15.0], ["10/27", "15:54", "디즈니 기념품", "쇼핑", 19700, 99.0], ["10/27", "17:04", "디디 택시 (디즈니→시내 복귀)", "교통", 21600, 108.3], ["10/27", "18:30", "하이디라오 훠궈 저녁 (인민광장점)", "식비", 91600, 460.41], ["10/27", "19:08", "M&M's 월드 (초콜릿 100g · 아이스크림 숟가락)", "쇼핑", 26900, 135.02], ["10/27", "19:33", "탕후루 간식 (泰康食品)", "간식", 5000, 25.0], ["10/27", "20:21", "미니소 쇼핑", "쇼핑", 23400, 117.7], ["10/27", "20:39", "패밀리마트 (합창단 과자 선물 · 아이 컵라면·햇반)", "쇼핑", 26800, 134.6], ["10/27", "20:44", "패밀리마트 추가 (합창단 간식 · 맥주)", "쇼핑", 8500, 42.8], ["10/28", "08:35", "디디 택시 (호텔→신천지)", "교통", 2600, 13.0], ["10/28", "09:01", "대한민국 임시정부 관람료", "관광", 11900, 60.0], ["10/28", "10:43", "디디 택시 (→인민광장)", "교통", 8700, 43.9], ["10/28", "17:08", "우전 저녁 (동파육·오리·볶음밥)", "식비", 49800, 250.29], ["10/28", "17:47", "탕후루 2개 (우전)", "간식", 10000, 50.0], ["10/28", "18:38", "아이스크림 (우전)", "간식", 5600, 28.0], ["10/28", "18:45", "옥수수 (우전)", "간식", 2000, 10.0], ["10/28", "22:03", "패밀리마트 (라면·추가 선물)", "쇼핑", 10300, 52.0], ["10/29", "09:03", "디디 택시 (호텔→텐즈팡)", "교통", 5800, 28.9], ["10/29", "09:34", "칭즈 핸드크림 (텐즈팡)", "쇼핑", 37800, 190.0], ["10/29", "09:48", "칭즈 핸드크림 추가 (텐즈팡)", "쇼핑", 2000, 10.0], ["10/29", "10:07", "아이 기념품 (此时此地 · 텐즈팡)", "쇼핑", 3600, 18.0], ["10/29", "10:12", "기념품 가게 (手绘上海 · 텐즈팡)", "쇼핑", 11700, 59.0], ["10/29", "10:40", "블랜버니 기념품 (텐즈팡)", "쇼핑", 19700, 98.9], ["10/29", "10:54", "모자 기념품 (텐즈팡)", "쇼핑", 17700, 89.0], ["10/29", "10:56", "망고 2개 (25 × 2)", "간식", 10000, 50.0], ["10/29", "11:07", "선글라스 (时光铺 · 텐즈팡)", "쇼핑", 19700, 99.0], ["10/29", "11:13", "향수 (摩登红人 · 텐즈팡)", "쇼핑", 7800, 39.0], ["10/29", "11:23", "사탕 가게 (텐즈팡)", "쇼핑", 10100, 51.0], ["10/29", "11:46", "튀김 간식 (顾記锅贴 · 타이캉루)", "간식", 4600, 23.0], ["10/29", "12:22", "밀크티", "간식", 6800, 34.0], ["10/29", "13:15", "디디 택시 (텐즈팡→호텔)", "교통", 5000, 25.0], ["10/29", "13:25", "디디 택시 (호텔→푸동공항)", "교통", 30900, 155.3], ["10/29", "14:50", "서브웨이 (푸동공항)", "식비", 10100, 51.0], ["10/29", "15:35", "햄버거 (푸동공항 · 지연 중)", "식비", 35000, 176.0], ["10/29", "15:37", "콜라 (푸동공항 · 지연 중)", "식비", 2000, 10.0]];
+function renderSpend(){
+  const box = $("#spendSum"), days = $("#spendDays"); if(!box || !days) return;
+  const DN = {"10/26":"1일차 10/26(월)","10/27":"2일차 10/27(화)","10/28":"3일차 10/28(수)","10/29":"4일차 10/29(목)"};
+  const CAT = {"쇼핑":"🛍 쇼핑·기념품","식비":"🍜 식사","숙소":"🏨 호텔 (업그레이드·조식)","교통":"🚕 교통 (택시·충전)","간식":"🍡 간식","관광":"🏛 관광"};
+  const yfmt = v => v==null ? "" : v.toLocaleString("ko-KR",{minimumFractionDigits:2,maximumFractionDigits:2});
+  const totW = SPEND.reduce((a,x)=>a+x[4],0), totY = SPEND.reduce((a,x)=>a+(x[5]||0),0), krOnly = SPEND.filter(x=>x[5]==null).reduce((a,x)=>a+x[4],0);
+  const byDay = {}, byCat = {};
+  SPEND.forEach(x=>{ (byDay[x[0]] = byDay[x[0]] || {w:0,y:0,list:[]}); byDay[x[0]].w += x[4]; byDay[x[0]].y += (x[5]||0); byDay[x[0]].list.push(x); byCat[x[3]] = (byCat[x[3]]||0) + x[4]; });
+  const pre = BUDGET.reduce((a,b)=>a+b[1],0) + 18600;
+  const cats = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+  const max = cats[0][1];
+  box.innerHTML = `<div class="rtop"><span class="rname">💰 현지 지출 합계</span><span class="rper">${won(totW)}</span></div>`+
+    `<div class="small muted">한국 ${won(krOnly)} + 상하이 <span class="cnum">${yfmt(totY)}위안</span> (약 ${won(totW-krOnly)}) · 1위안 ≈ ${CNY_KRW}원 기준 · 실제 카드 청구액과 조금 다를 수 있음</div>`+
+    `<table style="margin-top:10px"><tbody>${Object.keys(DN).filter(d=>byDay[d]).map(d=>`<tr><td>${DN[d]}</td><td class="num cnum">${yfmt(byDay[d].y)}위안</td><td class="num">${won(byDay[d].w)}</td></tr>`).join("")}</tbody></table>`+
+    `<div style="margin-top:12px;display:grid;gap:6px">${cats.map(([c,v])=>`<div><div class="small" style="display:flex;justify-content:space-between"><span>${esc(CAT[c]||c)}</span><b>${won(v)}</b></div><div style="height:8px;border-radius:4px;background:var(--line,#e6e6e6);overflow:hidden"><i style="display:block;height:100%;width:${Math.round(v/max*100)}%;background:var(--gold,#c9a227)"></i></div></div>`).join("")}</div>`+
+    `<div class="rtop" style="margin-top:12px;border-top:1px solid var(--line,#e6e6e6);padding-top:10px"><span class="rname">✈️ 여행 전체 비용</span><span class="rper">${won(pre+totW)}</span></div>`+
+    `<div class="small muted">사전 결제 ${won(pre)} (항공·숙소·디즈니·유람선·우전 투어·픽업·보험) + 현지 지출 ${won(totW)}</div>`+
+    `<div class="small muted" style="margin-top:6px">⚠️ 10/26 호텔 결제 중 225.57위안 3건은 중복 여부 확인 중</div>`;
+  days.innerHTML = Object.keys(DN).filter(d=>byDay[d]).map(d=>`<details class="card fold" style="margin-top:10px"><summary>${DN[d]} · ${won(byDay[d].w)} <span class="small muted">(${byDay[d].list.length}건)</span></summary>`+
+    `<div class="tablewrap"><table style="margin-top:8px"><thead><tr><th>시간</th><th>항목</th><th class="num">위안</th><th class="num">원화</th></tr></thead><tbody>`+
+    byDay[d].list.map(x=>`<tr><td class="small">${esc(x[1])}</td><td>${esc(x[2])}</td><td class="num cnum">${yfmt(x[5])}</td><td class="num">${won(x[4])}</td></tr>`).join("")+
+    `</tbody><tfoot><tr><td></td><td><b>합계</b></td><td class="num cnum"><b>${yfmt(byDay[d].y)}</b></td><td class="num"><b>${won(byDay[d].w)}</b></td></tr></tfoot></table></div></details>`).join("");
+}
+setTimeout(renderSpend, 0);
 renderReview();
 show("home");
 
